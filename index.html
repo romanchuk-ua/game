@@ -4,7 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GAME BY ROMA</title>
+    <!-- Іконка сайту -->
+    <link rel="icon" href="img/ico.svg" type="image/svg+xml">
     <style>
+        /* Приховуємо стандартний курсор скрізь */
+        * {
+            cursor: none !important;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+            transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+        }
+
         /* Сучасні CSS Змінні */
         :root[data-theme="black"] {
             --bg-color: #09090b;
@@ -15,8 +27,8 @@
             --text-main: #fafafa;
             --text-muted: #a1a1aa;
             --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8);
-            --shadow-hover: 0 20px 40px -10px rgba(0, 0, 0, 1);
-            --accent: #8b5cf6;
+            --shadow-hover: 0 20px 40px -10px rgba(255, 255, 255, 0.3);
+            --accent: #ffffff; /* Біле виділення */
         }
 
         :root[data-theme="dark-blue"] {
@@ -28,8 +40,8 @@
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
             --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.6);
-            --shadow-hover: 0 20px 40px -10px rgba(2, 132, 199, 0.2);
-            --accent: #0ea5e9;
+            --shadow-hover: 0 20px 40px -10px rgba(56, 189, 248, 0.4);
+            --accent: #38bdf8; /* Блакитне виділення */
         }
 
         :root[data-theme="white"] {
@@ -37,21 +49,12 @@
             --header-bg: rgba(248, 250, 252, 0.8);
             --card-bg: #ffffff;
             --card-hover: #f1f5f9;
-            --card-border: rgba(0, 0, 0, 0.05);
+            --card-border: rgba(0, 0, 0, 0.1);
             --text-main: #0f172a;
             --text-muted: #64748b;
             --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.1);
-            --shadow-hover: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
-            --accent: #f43f5e;
-        }
-
-        /* Глобальні стилі */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
-            transition: background-color 0.4s ease, color 0.4s ease, border-color 0.4s ease;
+            --shadow-hover: 0 20px 40px -10px rgba(0, 0, 0, 0.4);
+            --accent: #000000; /* Чорне виділення */
         }
 
         body {
@@ -59,6 +62,54 @@
             color: var(--text-main);
             min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Кастомний курсор */
+        #custom-cursor {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 24px; /* Зменшений розмір */
+            height: 24px;
+            background-image: url('img/1.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            pointer-events: none;
+            z-index: 99999;
+            transform: translate(0, 0); /* Точка кліку - верхній лівий кут */
+            transition: width 0.2s ease, height 0.2s ease, filter 0.2s ease;
+            will-change: transform;
+            /* Резервний варіант, якщо картинки немає */
+            background-color: transparent;
+        }
+
+        #custom-cursor.fallback::after {
+            content: '';
+            display: block;
+            width: 12px;
+            height: 12px;
+            background-color: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        /* Анімація курсора при наведенні */
+        #custom-cursor.hover {
+            width: 34px;
+            height: 34px;
+            filter: drop-shadow(0 0 8px var(--accent));
+        }
+
+        /* Канвас для фонових візерунків */
+        #particles-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            pointer-events: none;
         }
 
         /* Шапка з ефектом скла */
@@ -90,6 +141,7 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             margin: 0;
+            display: inline-block;
         }
 
         .site-desc {
@@ -106,25 +158,6 @@
             align-items: center;
         }
 
-        select {
-            appearance: none;
-            padding: 10px 16px;
-            border-radius: 12px;
-            border: 1px solid var(--card-border);
-            background-color: var(--card-bg);
-            color: var(--text-main);
-            font-weight: 600;
-            cursor: pointer;
-            outline: none;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-        }
-
-        select:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-        }
-
         /* Кастомний випадаючий список */
         .custom-dropdown {
             position: relative;
@@ -134,6 +167,7 @@
         .dropdown-btn {
             display: flex;
             align-items: center;
+            justify-content: center; /* Центрування тексту */
             gap: 10px;
             padding: 10px 16px;
             border-radius: 12px;
@@ -141,15 +175,16 @@
             background-color: var(--card-bg);
             color: var(--text-main);
             font-weight: 600;
-            cursor: pointer;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
             user-select: none;
+            min-width: 160px; /* Щоб кнопки були однакової ширини */
         }
 
         .dropdown-btn:hover {
             border-color: var(--accent);
             transform: translateY(-2px);
+            box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.15);
         }
 
         .flag-icon {
@@ -163,7 +198,8 @@
         .dropdown-menu {
             position: absolute;
             top: 115%;
-            right: 0;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
             background-color: var(--card-bg);
             border: 1px solid var(--card-border);
             border-radius: 12px;
@@ -171,10 +207,9 @@
             overflow: hidden;
             display: flex;
             flex-direction: column;
-            min-width: 150px;
+            width: 100%;
             opacity: 0;
             visibility: hidden;
-            transform: translateY(-10px);
             transition: all 0.3s ease;
             z-index: 200;
         }
@@ -182,18 +217,19 @@
         .dropdown-menu.active {
             opacity: 1;
             visibility: visible;
-            transform: translateY(0);
+            transform: translateX(-50%) translateY(0);
         }
 
         .dropdown-item {
             display: flex;
             align-items: center;
+            justify-content: center; /* Центрування тексту в меню */
             gap: 10px;
             padding: 12px 16px;
-            cursor: pointer;
             color: var(--text-main);
             font-weight: 500;
             transition: background-color 0.2s ease, color 0.2s ease;
+            text-align: center;
         }
 
         .dropdown-item:hover {
@@ -214,7 +250,7 @@
         /* Карточка гри */
         .game-card {
             background-color: var(--card-bg);
-            border: 1px solid var(--card-border);
+            border: 2px solid transparent;
             border-radius: 20px;
             overflow: hidden;
             text-decoration: none;
@@ -227,7 +263,6 @@
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease;
         }
 
-        /* Затримка анімації для каскадного ефекту */
         .game-card:nth-child(1) { animation-delay: 0.1s; }
         .game-card:nth-child(2) { animation-delay: 0.2s; }
         .game-card:nth-child(3) { animation-delay: 0.3s; }
@@ -244,7 +279,7 @@
         .game-card:hover {
             transform: translateY(-12px) scale(1.03);
             box-shadow: var(--shadow-hover);
-            border-color: var(--accent);
+            border-color: var(--accent); /* Колір виділення з теми */
         }
 
         .game-image {
@@ -271,6 +306,11 @@
             font-weight: 700;
             font-size: 1.15rem;
             letter-spacing: 0.3px;
+            transition: color 0.3s ease;
+        }
+
+        .game-card:hover .game-title {
+            color: var(--accent);
         }
 
         @keyframes dropWithBounce {
@@ -306,30 +346,49 @@
 </head>
 <body>
 
+    <!-- Канвас для фонових візерунків -->
+    <canvas id="particles-bg"></canvas>
+
+    <!-- Кастомний курсор -->
+    <div id="custom-cursor"></div>
+
     <header>
         <div class="header-left">
-            <h1>GAME BY ROMA</h1>
+            <h1 class="hoverable">GAME BY ROMA</h1>
             <div id="site-desc" class="site-desc">Збірка топових браузерних ігор</div>
         </div>
         
         <div class="controls">
-            <select id="theme-selector">
-                <option value="black" id="opt-theme-black">Чорна тема</option>
-                <option value="dark-blue" id="opt-theme-blue">Темно-синя тема</option>
-                <option value="white" id="opt-theme-white">Біла тема</option>
-            </select>
+            <!-- Кастомний вибір теми (текст по центру) -->
+            <div class="custom-dropdown" id="theme-dropdown">
+                <div class="dropdown-btn hoverable" id="theme-btn">
+                    <span id="current-theme-text">Чорна тема</span>
+                </div>
+                <div class="dropdown-menu" id="theme-menu">
+                    <div class="dropdown-item hoverable" data-theme-val="black">
+                        <span id="opt-theme-black">Чорна тема</span>
+                    </div>
+                    <div class="dropdown-item hoverable" data-theme-val="dark-blue">
+                        <span id="opt-theme-blue">Темно-синя тема</span>
+                    </div>
+                    <div class="dropdown-item hoverable" data-theme-val="white">
+                        <span id="opt-theme-white">Біла тема</span>
+                    </div>
+                </div>
+            </div>
 
+            <!-- Кастомний вибір мови -->
             <div class="custom-dropdown" id="lang-dropdown">
-                <div class="dropdown-btn" id="lang-btn">
+                <div class="dropdown-btn hoverable" id="lang-btn">
                     <img src="img/ua.svg" alt="UK" class="flag-icon" id="current-flag" onerror="this.src='https://flagcdn.com/ua.svg'">
                     <span id="current-lang-text">Українська</span>
                 </div>
                 <div class="dropdown-menu" id="lang-menu">
-                    <div class="dropdown-item" data-lang="uk" data-flag="img/ua.svg" data-fallback="https://flagcdn.com/ua.svg">
+                    <div class="dropdown-item hoverable" data-lang="uk" data-flag="img/ua.svg" data-fallback="https://flagcdn.com/ua.svg">
                         <img src="img/ua.svg" alt="UK" class="flag-icon" onerror="this.src='https://flagcdn.com/ua.svg'">
                         <span id="menu-lang-uk">Українська</span>
                     </div>
-                    <div class="dropdown-item" data-lang="en" data-flag="img/usa.svg" data-fallback="https://flagcdn.com/us.svg">
+                    <div class="dropdown-item hoverable" data-lang="en" data-flag="img/usa.svg" data-fallback="https://flagcdn.com/us.svg">
                         <img src="img/usa.svg" alt="USA" class="flag-icon" onerror="this.src='https://flagcdn.com/us.svg'">
                         <span id="menu-lang-en">English</span>
                     </div>
@@ -339,96 +398,84 @@
     </header>
 
     <main class="games-container">
-        <!-- Гра 1 -->
-        <a href="https://eaglercraft.com/play?version=1.8.8-wasm&userscript=flameddogo99-eaglermobile.js" target="_blank" class="game-card">
+        <a href="https://eaglercraft.com/play?version=1.8.8-wasm&userscript=flameddogo99-eaglermobile.js" target="_blank" class="game-card hoverable">
             <div class="image-wrapper">
                 <img src="img/minecraft.png" alt="Minecraft" class="game-image" onerror="this.src='https://via.placeholder.com/300x300/2a2a2a/ffffff?text=Minecraft'">
             </div>
             <div class="game-title">Minecraft</div>
         </a>
 
-        <!-- Гра 2 -->
-        <a href="https://play-cs.com/uk/servers" target="_blank" class="game-card">
+        <a href="https://play-cs.com/uk/servers" target="_blank" class="game-card hoverable">
             <div class="image-wrapper">
                 <img src="img/cs.png" alt="Counter-Strike 1.6" class="game-image" onerror="this.src='https://via.placeholder.com/300x300/2a2a2a/ffffff?text=CS+1.6'">
             </div>
             <div class="game-title">Counter-Strike 1.6</div>
         </a>
 
-        <!-- Гра 3 -->
-        <a href="https://krunker.io/" target="_blank" class="game-card">
+        <a href="https://krunker.io/" target="_blank" class="game-card hoverable">
             <div class="image-wrapper">
                 <img src="img/krunker.png" alt="Krunker" class="game-image" onerror="this.src='https://via.placeholder.com/300x300/2a2a2a/ffffff?text=Krunker'">
             </div>
             <div class="game-title">Krunker</div>
         </a>
 
-        <!-- Гра 4 -->
-        <a href="https://poki.com/ua/g/subway-surfers" target="_blank" class="game-card">
+        <a href="https://poki.com/ua/g/subway-surfers" target="_blank" class="game-card hoverable">
             <div class="image-wrapper">
                 <img src="img/subway.png" alt="Subway surfers" class="game-image" onerror="this.src='https://via.placeholder.com/300x300/2a2a2a/ffffff?text=Subway'">
             </div>
             <div class="game-title">Subway surfers</div>
         </a>
 
-        <!-- Гра 5 -->
-        <a href="https://poki.com/ua/g/level-devil" target="_blank" class="game-card">
+        <a href="https://poki.com/ua/g/level-devil" target="_blank" class="game-card hoverable">
             <div class="image-wrapper">
                 <img src="img/devil.png" alt="Level devil" class="game-image" onerror="this.src='https://via.placeholder.com/300x300/2a2a2a/ffffff?text=Level+Devil'">
             </div>
             <div class="game-title">Level devil</div>
         </a>
 
-        <!-- Гра 6 -->
-        <a href="https://poki.com/ua/g/we-become-what-we-behold" target="_blank" class="game-card">
+        <a href="https://poki.com/ua/g/we-become-what-we-behold" target="_blank" class="game-card hoverable">
             <div class="image-wrapper">
                 <img src="img/become.png" alt="We become what we behold" class="game-image" onerror="this.src='https://via.placeholder.com/300x300/2a2a2a/ffffff?text=We+Become'">
             </div>
             <div class="game-title">We become what we behold</div>
         </a>
 
-        <!-- Гра 7 -->
-        <a href="https://evoworld.io/" target="_blank" class="game-card">
+        <a href="https://evoworld.io/" target="_blank" class="game-card hoverable">
             <div class="image-wrapper">
                 <img src="img/fly.png" alt="Fly or Die" class="game-image" onerror="this.src='https://via.placeholder.com/300x300/2a2a2a/ffffff?text=Fly+or+Die'">
             </div>
             <div class="game-title">Fly or Die</div>
         </a>
 
-        <!-- Гра 8 -->
-        <a href="https://geometrylitepc.io/" target="_blank" class="game-card">
+        <a href="https://geometrylitepc.io/" target="_blank" class="game-card hoverable">
             <div class="image-wrapper">
                 <img src="img/geometry.png" alt="Geometry Dash" class="game-image" onerror="this.src='https://via.placeholder.com/300x300/2a2a2a/ffffff?text=Geometry+Dash'">
             </div>
             <div class="game-title">Geometry Dash</div>
         </a>
 
-        <!-- Гра 9 -->
-        <a href="https://amongusplay.online/" target="_blank" class="game-card">
+        <a href="https://amongusplay.online/" target="_blank" class="game-card hoverable">
             <div class="image-wrapper">
                 <img src="img/among.png" alt="Among us" class="game-image" onerror="this.src='https://via.placeholder.com/300x300/2a2a2a/ffffff?text=Among+Us'">
             </div>
             <div class="game-title">Among us</div>
         </a>
 
-        <!-- Гра 10 -->
-        <a href="https://holeio.com/" target="_blank" class="game-card">
+        <a href="https://holeio.com/" target="_blank" class="game-card hoverable">
             <div class="image-wrapper">
                 <img src="img/hole-io.png" alt="Hole io" class="game-image" onerror="this.src='https://via.placeholder.com/300x300/2a2a2a/ffffff?text=Hole.io'">
             </div>
             <div class="game-title">Hole io</div>
         </a>
 
-        <!-- Гра 11 -->
-        <a href="https://diep.io/" target="_blank" class="game-card">
+        <a href="https://diep.io/" target="_blank" class="game-card hoverable">
             <div class="image-wrapper">
                 <img src="img/diep.png" alt="Diep io" class="game-image" onerror="this.src='https://via.placeholder.com/300x300/2a2a2a/ffffff?text=Diep.io'">
             </div>
             <div class="game-title">Diep io</div>
         </a>
 
-        <!-- Гра 12 -->
-        <a href="https://www.crazygames.com/ua/game/city-car-driving-simulator-online" target="_blank" class="game-card">
+        <a href="https://www.crazygames.com/ua/game/city-car-driving-simulator-online" target="_blank" class="game-card hoverable">
             <div class="image-wrapper">
                 <img src="img/car.png" alt="City Car Driving" class="game-image" onerror="this.src='https://via.placeholder.com/300x300/2a2a2a/ffffff?text=City+Car'">
             </div>
@@ -437,23 +484,112 @@
     </main>
 
     <script>
-        const themeSelector = document.getElementById('theme-selector');
-        themeSelector.addEventListener('change', (e) => {
-            document.documentElement.setAttribute('data-theme', e.target.value);
+        // --- ЛОГІКА КАСТОМНОГО КУРСОРА ---
+        const cursor = document.getElementById('custom-cursor');
+        
+        // Відстеження руху миші
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`;
         });
+
+        // Перевірка чи завантажилась картинка курсору (резервний CSS-курсор)
+        const cursorImg = new Image();
+        cursorImg.src = 'img/1.png';
+        cursorImg.onerror = () => { cursor.classList.add('fallback'); };
+
+        // Додавання ефекту при наведенні
+        const hoverElements = document.querySelectorAll('.hoverable');
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+
+        // --- ЛОГІКА ФОНОВИХ ВІЗЕРУНКІВ (КАНВАС) ---
+        const canvas = document.getElementById('particles-bg');
+        const ctx = canvas.getContext('2d');
+        let particlesArray = [];
+        let currentThemeColor = 'rgba(255, 255, 255, 0.6)'; // Колір за замовчуванням (Чорна тема)
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1; // Розмір частинок
+                this.speedY = Math.random() * 1.5 + 0.5; // Швидкість падіння
+                this.speedX = (Math.random() - 0.5) * 0.5; // Легкий вітер
+            }
+            update() {
+                this.y += this.speedY;
+                this.x += this.speedX;
+                // Якщо частинка виходить за екран - повертаємо нагору
+                if (this.y > canvas.height) {
+                    this.y = 0 - this.size;
+                    this.x = Math.random() * canvas.width;
+                }
+            }
+            draw() {
+                ctx.fillStyle = currentThemeColor;
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+        function initParticles() {
+            particlesArray = [];
+            let numberOfParticles = (canvas.width * canvas.height) / 8000; // Кількість залежить від екрану
+            for (let i = 0; i < numberOfParticles; i++) {
+                particlesArray.push(new Particle());
+            }
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (let i = 0; i < particlesArray.length; i++) {
+                particlesArray[i].update();
+                particlesArray[i].draw();
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        initParticles();
+        animateParticles();
+
+
+        // --- ДРОПДАУНИ, ТЕМИ ТА МОВА ---
+        const themeBtn = document.getElementById('theme-btn');
+        const themeMenu = document.getElementById('theme-menu');
+        const currentThemeText = document.getElementById('current-theme-text');
+        const themeItems = document.querySelectorAll('#theme-menu .dropdown-item');
 
         const langBtn = document.getElementById('lang-btn');
         const langMenu = document.getElementById('lang-menu');
         const currentLangText = document.getElementById('current-lang-text');
         const currentFlag = document.getElementById('current-flag');
-        const dropdownItems = document.querySelectorAll('.dropdown-item');
+        const langItems = document.querySelectorAll('#lang-menu .dropdown-item');
+
+        // Відкриття/закриття
+        themeBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            themeMenu.classList.toggle('active');
+            langMenu.classList.remove('active');
+        });
 
         langBtn.addEventListener('click', (e) => {
             e.stopPropagation();
             langMenu.classList.toggle('active');
+            themeMenu.classList.remove('active');
         });
 
         document.addEventListener('click', () => {
+            themeMenu.classList.remove('active');
             langMenu.classList.remove('active');
         });
 
@@ -476,9 +612,31 @@
             }
         };
 
-        dropdownItems.forEach(item => {
+        // Логіка зміни теми
+        themeItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const selectedTheme = item.getAttribute('data-theme-val');
+                document.documentElement.setAttribute('data-theme', selectedTheme);
+                
+                // Оновлення тексту кнопки (з урахуванням поточної мови)
+                const currentLang = document.documentElement.lang || 'uk';
+                const t = translations[currentLang];
+                if(selectedTheme === 'black') currentThemeText.innerText = t.themeBlack;
+                if(selectedTheme === 'dark-blue') currentThemeText.innerText = t.themeBlue;
+                if(selectedTheme === 'white') currentThemeText.innerText = t.themeWhite;
+
+                // Зміна кольору фонових частинок
+                if (selectedTheme === 'black') currentThemeColor = 'rgba(255, 255, 255, 0.6)';
+                if (selectedTheme === 'dark-blue') currentThemeColor = 'rgba(56, 189, 248, 0.4)'; // Блакитні частинки
+                if (selectedTheme === 'white') currentThemeColor = 'rgba(0, 0, 0, 0.3)'; // Темні частинки
+            });
+        });
+
+        // Логіка зміни мови
+        langItems.forEach(item => {
             item.addEventListener('click', () => {
                 const selectedLang = item.getAttribute('data-lang');
+                document.documentElement.lang = selectedLang;
                 const flagSrc = item.getAttribute('data-flag');
                 const fallbackSrc = item.getAttribute('data-fallback');
                 const t = translations[selectedLang];
@@ -493,6 +651,12 @@
                 document.getElementById('opt-theme-white').innerText = t.themeWhite;
                 document.getElementById('menu-lang-uk').innerText = t.langUk;
                 document.getElementById('menu-lang-en').innerText = t.langEn;
+
+                // Оновлення головної кнопки теми після зміни мови
+                const activeTheme = document.documentElement.getAttribute('data-theme');
+                if(activeTheme === 'black') currentThemeText.innerText = t.themeBlack;
+                if(activeTheme === 'dark-blue') currentThemeText.innerText = t.themeBlue;
+                if(activeTheme === 'white') currentThemeText.innerText = t.themeWhite;
             });
         });
     </script>
