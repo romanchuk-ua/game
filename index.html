@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GAME BY ROMA</title>
     
-    <!-- Всі варіанти іконок для 100% відображення -->
+    <!-- Всі варіанти іконок -->
     <link rel="icon" href="img/ico.svg" type="image/svg+xml">
     <link rel="icon" href="img/ico.png" type="image/png">
     <link rel="shortcut icon" href="img/ico.ico" type="image/x-icon">
@@ -92,7 +92,6 @@
             will-change: transform, width, height;
         }
 
-        /* Резервний варіант */
         #custom-cursor.fallback {
             background-image: none !important;
             background-color: transparent;
@@ -108,7 +107,6 @@
             transition: transform 0.2s ease;
         }
 
-        /* Анімація курсора при наведенні */
         #custom-cursor.hover {
             width: 44px;
             height: 44px;
@@ -332,7 +330,7 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* Екран Блокування (Жарт) */
+        /* Екран Блокування */
         #ban-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -414,7 +412,7 @@
     <!-- Канвас для фонових візерунків -->
     <canvas id="particles-bg"></canvas>
 
-    <!-- Екран жартівливого блокування -->
+    <!-- Екран блокування -->
     <div id="ban-screen">
         <canvas id="ban-particles"></canvas>
         <div class="ban-content">
@@ -426,7 +424,7 @@
     <!-- Кастомний курсор -->
     <div id="custom-cursor"></div>
 
-    <header>
+    <header id="main-header">
         <div class="header-left">
             <h1 class="hoverable" id="main-title">GAME BY ROMA</h1>
             <div id="site-desc" class="site-desc">Збірка топових браузерних ігор</div>
@@ -469,7 +467,7 @@
         </div>
     </header>
 
-    <main class="games-container">
+    <main id="main-content" class="games-container">
         <a href="https://eaglercraft.com/play?version=1.8.8-wasm&userscript=flameddogo99-eaglermobile.js" target="_blank" class="game-card hoverable">
             <div class="image-wrapper"><img src="img/minecraft.png" alt="Minecraft" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=Minecraft'"></div>
             <div class="game-title">Minecraft</div>
@@ -521,42 +519,67 @@
     </main>
 
     <script>
-        // --- ЗАХИСТ ВІД КОПІЮВАННЯ ТА DEVTOOLS ---
-        document.addEventListener('contextmenu', event => event.preventDefault()); 
-        
-        // Функція жорсткого покарання: стираємо весь DOM і кидаємо на ban.html
-        function banThief() {
-            document.body.innerHTML = '';
-            document.head.innerHTML = '';
-            window.location.replace('ban.html');
+        // --- СЕКРЕТНИЙ UNBAN ---
+        // Якщо написати "unban" в консолі, виконається цей код
+        Object.defineProperty(window, 'unban', {
+            get: function() {
+                localStorage.removeItem('isBanned');
+                window.location.reload();
+                return "Розблоковано! Сторінка оновлюється...";
+            }
+        });
+
+        // --- ВІЧНЕ БЛОКУВАННЯ ТА ЗАХИСТ ---
+        function executeRealBan() {
+            localStorage.setItem('isBanned', 'true');
+            document.getElementById('ban-screen').classList.add('active');
+            
+            // Приховуємо кнопку з жарту (щоб не розбанились просто так)
+            const btn = document.getElementById('unban-btn');
+            if (btn) btn.style.display = 'none';
+
+            // Видаляємо весь контент з HTML щоб його не можна було скопіювати
+            const header = document.getElementById('main-header');
+            if (header) header.remove();
+            
+            const main = document.getElementById('main-content');
+            if (main) main.remove();
         }
 
+        // Перевірка при завантаженні сторінки (чи був забанений раніше)
+        if (localStorage.getItem('isBanned') === 'true') {
+            executeRealBan();
+        }
+
+        document.addEventListener('contextmenu', event => event.preventDefault()); 
+
         document.onkeydown = function(e) {
+            // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C, Ctrl+U, Ctrl+S
             if (e.keyCode == 123 || 
                (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || 
                (e.ctrlKey && (e.keyCode == 85 || e.keyCode == 67 || e.keyCode == 83))) {
                 e.preventDefault();
-                banThief(); // Перекидаємо одразу при спробі натиснути комбінацію
+                executeRealBan();
                 return false;
             }
         };
 
-        // Трюк 1: Дебагер пастка
+        // Пастка з дебагером
         setInterval(function() {
             const start = performance.now();
             debugger;
             const end = performance.now();
             if (end - start > 100) {
-                banThief();
+                executeRealBan();
             }
         }, 500);
 
-        // Трюк 2: Перевірка різкого відкриття DevTools через розміри вікна
+        // Пастка зі зміною розміру екрану
         setInterval(function() {
             const widthThreshold = window.outerWidth - window.innerWidth > 160;
             const heightThreshold = window.outerHeight - window.innerHeight > 160;
             if (widthThreshold || heightThreshold) {
-                banThief();
+                executeRealBan();
             }
         }, 1000);
 
@@ -570,14 +593,11 @@
 
         const img1 = new Image(); img1.src = 'img/1.png';
         const img2 = new Image(); img2.src = 'img/2.png';
-        
         img1.onerror = () => cursor.classList.add('fallback');
 
         const attachHoverEffects = () => {
             const hoverElements = document.querySelectorAll('.hoverable');
-            hoverElements.forEach(el => {
-                el.replaceWith(el.cloneNode(true));
-            });
+            hoverElements.forEach(el => { el.replaceWith(el.cloneNode(true)); });
             document.querySelectorAll('.hoverable').forEach(el => {
                 el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
                 el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
@@ -591,17 +611,25 @@
         const unbanBtn = document.getElementById('unban-btn');
         let clickCount = 0;
 
-        mainTitle.addEventListener('click', () => {
-            clickCount++;
-            if (clickCount >= 4) {
-                banScreen.classList.add('active');
-                clickCount = 0;
-            }
-        });
+        if (mainTitle) {
+            mainTitle.addEventListener('click', () => {
+                clickCount++;
+                if (clickCount >= 4) {
+                    // Якщо це просто жарт, не записуємо в localStorage і показуємо кнопку
+                    if(localStorage.getItem('isBanned') !== 'true') {
+                        banScreen.classList.add('active');
+                        unbanBtn.style.display = 'inline-block';
+                    }
+                    clickCount = 0;
+                }
+            });
+        }
 
-        unbanBtn.addEventListener('click', () => {
-            banScreen.classList.remove('active');
-        });
+        if (unbanBtn) {
+            unbanBtn.addEventListener('click', () => {
+                banScreen.classList.remove('active');
+            });
+        }
 
         // --- ЛОГІКА ФОНОВИХ ВІЗЕРУНКІВ (КАНВАС) ---
         function setupCanvas(canvasId, isBanScreen = false) {
@@ -679,22 +707,24 @@
         const currentLangText = document.getElementById('current-lang-text');
         const currentFlag = document.getElementById('current-flag');
 
-        themeBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            themeMenu.classList.toggle('active');
-            langMenu.classList.remove('active');
-        });
+        if (themeBtn && langBtn) {
+            themeBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                themeMenu.classList.toggle('active');
+                langMenu.classList.remove('active');
+            });
 
-        langBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            langMenu.classList.toggle('active');
-            themeMenu.classList.remove('active');
-        });
+            langBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                langMenu.classList.toggle('active');
+                themeMenu.classList.remove('active');
+            });
 
-        document.addEventListener('click', () => {
-            themeMenu.classList.remove('active');
-            langMenu.classList.remove('active');
-        });
+            document.addEventListener('click', () => {
+                themeMenu.classList.remove('active');
+                langMenu.classList.remove('active');
+            });
+        }
 
         const translations = {
             uk: { siteDesc: "Збірка топових браузерних ігор", themeBlack: "Чорна тема", themeBlue: "Темно-синя тема", themeWhite: "Біла тема", langUk: "Українська", langEn: "English" },
