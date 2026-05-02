@@ -358,7 +358,7 @@
         <div id="bot-joke-text">Підтверджуючи що ви людина, ви даєте доступ до вашої камери, IP адреси, та також дозвіл на виклик СБУ під важу квартиру з вашого номеру телефону</div>
     </div>
 
-    <!-- Екран блокування -->
+    <!-- Екран блокування (для жарту) -->
     <div id="ban-screen">
         <canvas id="ban-particles"></canvas>
         <div class="ban-content">
@@ -546,7 +546,6 @@
 
         if (localStorage.getItem('isBanned') === 'true') {
             document.body.classList.remove('bot-active');
-            botScreen.style.display = 'none';
             applyBanVisuals();
         } else {
             cfBoxCheck.addEventListener('click', function() {
@@ -584,27 +583,37 @@
 
         function applyBanVisuals() {
             document.body.classList.remove('bot-active');
-            document.getElementById('ban-screen').classList.add('active');
             
-            const btn = document.getElementById('unban-btn');
-            if (btn) btn.style.display = 'none';
-
             // --- АГРЕСИВНЕ ВИДАЛЕННЯ КОДУ З DOM (ЩОБ НЕ БУЛО ВИДНО В DEVTOOLS) ---
-            const appWrap = document.getElementById('app-wrapper');
-            if (appWrap) appWrap.remove(); // Видаляє весь контент (ігри, шапку, футер)
+            // 1. Повністю видаляємо вміст Head (стилі, лінки)
+            document.head.innerHTML = `
+                <style>
+                    body { margin: 0; background-color: #000; overflow: hidden; font-family: system-ui, sans-serif; user-select: none; }
+                    .ban-content { display: flex; flex-direction: column; justify-content: center; align-items: center; height: 100vh; position: relative; z-index: 2; text-align: center; padding: 20px; }
+                    .ban-content h2 { color: #ff0000; font-size: 3rem; font-weight: 900; text-transform: uppercase; margin-bottom: 30px; text-shadow: 0 0 20px rgba(255, 0, 0, 0.8); }
+                    #ban-ip { margin-top: 25px; color: #555; font-size: 1rem; font-family: monospace; font-weight: bold; letter-spacing: 1px; }
+                </style>
+            `;
             
-            const botCheck = document.getElementById('bot-check-screen');
-            if (botCheck) botCheck.remove(); // Видаляє екран Cloudflare
-            
-            const customCur = document.getElementById('custom-cursor');
-            if (customCur) customCur.remove(); // Видаляє кастомний курсор
+            // 2. Повністю перезаписуємо Body (видаляємо ігри, меню і оригінальні скріпти)
+            document.body.innerHTML = `
+                <div style="position:fixed;top:0;left:0;width:100%;height:100%;background:#000;z-index:999990;">
+                    <div class="ban-content">
+                        <h2>Вас було заблоковано назавжди!</h2>
+                        <div id="ban-ip">IP: Завантаження...</div>
+                    </div>
+                </div>
+            `;
 
-            // Видаляємо всі теги script, щоб неможливо було скопіювати логіку
-            document.querySelectorAll('script').forEach(s => s.remove());
-            
-            // Вимикаємо "агресивний захист" консолі, щоб дати можливість написати unban
+            // Вимикаємо "звичайний" інтервал, запускаємо жорсткий
             banIntervals.forEach(clearInterval);
             document.onkeydown = null; 
+
+            // ВМИКАЄМО ПАСТКУ ДЛЯ DEVTOOLS (Те саме "Anonymous")
+            // Кожні 50мс генерується дебагер. Якщо відкрита панель - її паралізує на вкладці Sources в анонімному файлі.
+            setInterval(function() {
+                Function("debugger")();
+            }, 50);
 
             // ВМИКАЄМО МУЗИКУ БАНУ
             menuAudio.pause();
@@ -630,7 +639,7 @@
             document.addEventListener('contextmenu', event => event.preventDefault()); 
 
             document.onkeydown = function(e) {
-                // БЛОКУЄМО КЛАВІШІ DEV TOOLS БЕЗ БАНУ
+                // БЛОКУЄМО КЛАВІШІ DEV TOOLS
                 if (e.keyCode == 123 || // F12
                    (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || // Ctrl+Shift+I/J/C
                    (e.ctrlKey && (e.keyCode == 85 || e.keyCode == 67 || e.keyCode == 83))) { // Ctrl+U, Ctrl+C, Ctrl+S
@@ -642,7 +651,7 @@
             // ЯКЩО ПАНЕЛЬ ВСЕ Ж ТАКИ ВІДКРИЛАСЯ (через меню браузера) - ДАЄМО БАН І ВИДАЛЯЄМО КОД
             banIntervals.push(setInterval(function() {
                 const start = performance.now();
-                debugger;
+                Function("debugger")(); // Викидає в anonymous файл
                 const end = performance.now();
                 if (end - start > 100) {
                     executeRealBan();
@@ -662,25 +671,26 @@
         const cursor = document.getElementById('custom-cursor');
         
         document.addEventListener('mousemove', (e) => {
+            if(!cursor) return;
             cursor.style.transform = `translate(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%))`;
         });
 
         const img1 = new Image(); img1.src = 'img/1.png';
         const img2 = new Image(); img2.src = 'img/2.png';
-        img1.onerror = () => cursor.classList.add('fallback');
+        img1.onerror = () => { if(cursor) cursor.classList.add('fallback'); };
 
         const attachHoverEffects = () => {
             document.querySelectorAll('.hoverable:not(.hover-attached)').forEach(el => {
                 el.classList.add('hover-attached');
-                el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-                el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+                el.addEventListener('mouseenter', () => { if(cursor) cursor.classList.add('hover'); });
+                el.addEventListener('mouseleave', () => { if(cursor) cursor.classList.remove('hover'); });
             });
         };
         attachHoverEffects();
 
         // --- ЖАРТ (ПАСХАЛКА 4 КЛІКА) ---
         const mainTitle = document.getElementById('main-title');
-        const banScreen = document.getElementById('ban-screen');
+        const banScreenJoke = document.getElementById('ban-screen');
         const unbanBtn = document.getElementById('unban-btn');
         const banIpField = document.getElementById('ban-ip');
         let clickCount = 0;
@@ -690,7 +700,7 @@
                 clickCount++;
                 if (clickCount >= 4) {
                     if(localStorage.getItem('isBanned') !== 'true') {
-                        banScreen.classList.add('active');
+                        banScreenJoke.classList.add('active');
                         unbanBtn.style.display = 'inline-block';
                         banIpField.style.display = 'none'; 
                         
@@ -706,7 +716,7 @@
 
         if (unbanBtn) {
             unbanBtn.addEventListener('click', () => {
-                banScreen.classList.remove('active');
+                banScreenJoke.classList.remove('active');
                 banIpField.style.display = 'block'; 
                 
                 // Вимикаємо музику бану, повертаємо меню
@@ -718,6 +728,7 @@
         // --- ЛОГІКА ФОНОВИХ ВІЗЕРУНКІВ (КАНВАС) ---
         function setupCanvas(canvasId, isBanScreen = false) {
             const canvas = document.getElementById(canvasId);
+            if(!canvas) return;
             const ctx = canvas.getContext('2d');
             let particlesArray = [];
             
