@@ -26,6 +26,17 @@
             -webkit-user-drag: none;
         }
 
+        /* --- ВИКЛЮЧЕННЯ ДЛЯ ЕКРАНУ БОТА (СТАНДАРТНИЙ КУРСОР) --- */
+        body.bot-active * {
+            cursor: auto !important;
+        }
+        body.bot-active #custom-cursor {
+            display: none !important;
+        }
+        body.bot-active .cf-checkbox {
+            cursor: pointer !important;
+        }
+
         /* Сучасні CSS Змінні */
         :root[data-theme="black"] {
             --bg-color: #09090b;
@@ -76,15 +87,11 @@
 
         /* Кастомний курсор */
         #custom-cursor {
-            position: fixed;
-            top: 0; left: 0;
+            position: fixed; top: 0; left: 0;
             width: 54px; height: 54px;
             background-image: url('img/1.png');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            pointer-events: none;
-            z-index: 9999999;
+            background-size: contain; background-repeat: no-repeat; background-position: center;
+            pointer-events: none; z-index: 9999999;
             transform: translate(-50%, -50%);
             transition: width 0.2s cubic-bezier(0.25, 1, 0.5, 1), height 0.2s cubic-bezier(0.25, 1, 0.5, 1), background-image 0.2s ease;
             will-change: transform, width, height;
@@ -93,11 +100,8 @@
         #custom-cursor.fallback { background-image: none !important; background-color: transparent; }
         #custom-cursor.fallback::after {
             content: ''; display: block;
-            width: 15px; height: 15px;
-            background-color: var(--accent);
-            border-radius: 50%;
-            box-shadow: 0 0 10px var(--accent);
-            transition: transform 0.2s ease;
+            width: 15px; height: 15px; background-color: var(--accent); border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent); transition: transform 0.2s ease;
         }
 
         #custom-cursor.hover { width: 44px; height: 44px; background-image: url('img/2.png'); }
@@ -112,41 +116,33 @@
         /* --- СИСТЕМА АНТИ-БОТ (ФЕЙК CLOUDFLARE) --- */
         #bot-check-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #f0f2f5;
-            z-index: 999900;
+            background-color: #f0f2f5; z-index: 999900;
             display: flex; justify-content: center; align-items: center;
             transition: opacity 0.5s ease;
         }
         
         .cf-box {
-            background: #ffffff;
-            border: 1px solid #e0e0e0;
-            border-radius: 8px;
-            width: 320px; height: 75px;
-            display: flex; align-items: center; padding: 0 20px;
+            background: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px;
+            width: 320px; height: 75px; display: flex; align-items: center; padding: 0 20px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
         .cf-checkbox {
-            width: 28px; height: 28px;
-            border: 2px solid #c1c1c1; border-radius: 4px;
+            width: 28px; height: 28px; border: 2px solid #c1c1c1; border-radius: 4px;
             display: flex; justify-content: center; align-items: center;
             transition: 0.2s; position: relative;
         }
         .cf-checkbox:hover { border-color: #888; }
         
         .cf-checkbox.loading {
-            border-color: #e0e0e0; border-top-color: #333;
-            border-radius: 50%;
+            border-color: #e0e0e0; border-top-color: #333; border-radius: 50%;
             animation: cf-spin 1s linear infinite;
         }
         .cf-checkbox.success {
-            border-color: #28a745; background-color: #28a745;
-            animation: none;
+            border-color: #28a745; background-color: #28a745; animation: none;
         }
         .cf-checkbox.success::after {
-            content: ''; display: block;
-            width: 6px; height: 12px;
+            content: ''; display: block; width: 6px; height: 12px;
             border: solid white; border-width: 0 2px 2px 0;
             transform: rotate(45deg); margin-bottom: 3px;
         }
@@ -157,9 +153,8 @@
         .cf-logo-area { margin-left: auto; display: flex; flex-direction: column; align-items: center; }
         .cf-logo-text { font-size: 10px; color: #888; margin-top: 4px; }
         .cf-logo {
-            width: 24px; height: 24px;
+            width: 24px; height: 24px; border-radius: 50%;
             background: conic-gradient(from 90deg at 50% 50%, #f48120 0deg, #f48120 90deg, #f6a04d 90deg, #f6a04d 180deg, #f8b878 180deg, #f8b878 270deg, #fad1a1 270deg, #fad1a1 360deg);
-            border-radius: 50%;
         }
 
         /* --- ОСНОВНИЙ КОНТЕНТ (СХОВАНИЙ ЗА ЗАМОВЧУВАННЯМ) --- */
@@ -172,10 +167,8 @@
         header {
             background-color: var(--header-bg);
             backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            padding: 20px 40px;
-            display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid var(--card-border);
-            position: sticky; top: 0; z-index: 100;
+            padding: 20px 40px; display: flex; justify-content: space-between; align-items: center;
+            border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 100;
         }
 
         .header-left { display: flex; flex-direction: column; gap: 4px; }
@@ -208,10 +201,9 @@
 
         .dropdown-menu {
             position: absolute; top: 115%; left: 50%; transform: translateX(-50%) translateY(-10px);
-            background-color: var(--card-bg); border: 1px solid var(--card-border);
-            border-radius: 12px; box-shadow: var(--shadow); overflow: hidden;
-            display: flex; flex-direction: column; width: 100%;
-            opacity: 0; visibility: hidden; transition: all 0.3s ease; z-index: 200;
+            background-color: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px;
+            box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column;
+            width: 100%; opacity: 0; visibility: hidden; transition: all 0.3s ease; z-index: 200;
         }
 
         .dropdown-menu.active { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
@@ -284,14 +276,14 @@
         }
     </style>
 </head>
-<body oncontextmenu="return false;" ondragstart="return false;">
+<body class="bot-active" oncontextmenu="return false;" ondragstart="return false;">
 
     <canvas id="particles-bg"></canvas>
 
     <!-- СИСТЕМА АНТИ-БОТ -->
     <div id="bot-check-screen">
         <div class="cf-box">
-            <div id="cf-box-check" class="cf-checkbox hoverable"></div>
+            <div id="cf-box-check" class="cf-checkbox"></div>
             <div class="cf-text">Підтвердіть, що ви людина</div>
             <div class="cf-logo-area">
                 <div class="cf-logo"></div>
@@ -404,32 +396,42 @@
     </div>
 
     <script>
+        // --- СЕКРЕТНИЙ UNBAN З ЗАТРИМКОЮ ---
+        // Визначаємо як глобальну функцію, щоб вона точно була доступна завжди
+        window.unbanFunc = function() {
+            localStorage.removeItem('isBanned');
+            console.log("%c✅ РОЗБЛОКОВАНО! У вас є 5 секунд, щоб ЗАКРИТИ КОНСОЛЬ (F12 або Хрестик). Інакше захист знову вас заблокує!", "color: #28a745; font-size: 16px; font-weight: bold;");
+            setTimeout(() => { window.location.reload(); }, 5000);
+            return "Таймер пішов... Закривайте консоль!";
+        };
+        // Робимо так, щоб просто введення слова unban викликало розблокування
+        Object.defineProperty(window, 'unban', { get: window.unbanFunc });
+
         // --- ЛОГІКА АНТИ-БОТА ---
         const botScreen = document.getElementById('bot-check-screen');
         const cfBoxCheck = document.getElementById('cf-box-check');
         const appWrapper = document.getElementById('app-wrapper');
 
-        // Якщо користувач забанений, навіть не показуємо перевірку на бота
         if (localStorage.getItem('isBanned') === 'true') {
+            document.body.classList.remove('bot-active');
             botScreen.style.display = 'none';
             applyBanVisuals();
         } else {
             cfBoxCheck.addEventListener('click', function() {
                 if(this.classList.contains('loading') || this.classList.contains('success')) return;
                 
-                // Стадія 1: Завантаження
                 this.classList.add('loading');
                 
-                // Стадія 2: Успіх (через 1.5 сек)
                 setTimeout(() => {
                     this.classList.remove('loading');
                     this.classList.add('success');
                     
-                    // Стадія 3: Відкриття сайту (через 0.8 сек після успіху)
                     setTimeout(() => {
                         botScreen.style.opacity = '0';
                         setTimeout(() => {
                             botScreen.style.display = 'none';
+                            // Прибираємо клас bot-active, що повертає кастомний курсор
+                            document.body.classList.remove('bot-active');
                             appWrapper.style.opacity = '1';
                             appWrapper.style.visibility = 'visible';
                         }, 500);
@@ -437,21 +439,6 @@
                 }, 1500);
             });
         }
-
-        // --- СЕКРЕТНИЙ UNBAN З ЗАТРИМКОЮ ---
-        Object.defineProperty(window, 'unban', {
-            get: function() {
-                localStorage.removeItem('isBanned');
-                
-                console.log("%c✅ РОЗБЛОКОВАНО! У вас є 5 секунд, щоб ЗАКРИТИ КОНСОЛЬ (F12 або Хрестик). Інакше захист знову вас заблокує!", "color: #28a745; font-size: 16px; font-weight: bold;");
-                
-                setTimeout(() => {
-                    window.location.reload();
-                }, 5000);
-                
-                return "Таймер пішов... Закривайте консоль!";
-            }
-        });
 
         // --- ВІЧНЕ БЛОКУВАННЯ ТА ЗАХИСТ ---
         let banIntervals = []; 
@@ -463,21 +450,20 @@
         }
 
         function applyBanVisuals() {
+            document.body.classList.remove('bot-active');
             document.getElementById('ban-screen').classList.add('active');
             
             const btn = document.getElementById('unban-btn');
             if (btn) btn.style.display = 'none';
 
-            // ЖОРСТКЕ ВИДАЛЕННЯ КОНТЕНТУ
-            // Тепер ми видаляємо ВВЕСЬ контейнер з кодом
+            // ЖОРСТКЕ ВИДАЛЕННЯ КОНТЕНТУ, щоб його не скопіювали
             if (appWrapper) appWrapper.innerHTML = '';
             
-            // Зупиняємо "дебагери", щоб дати можливість написати unban
+            // Вимикаємо "агресивний захист", щоб дати можливість написати unban
             banIntervals.forEach(clearInterval);
             document.onkeydown = null; 
         }
 
-        // Запуск перевірки (якщо не забанений)
         if (localStorage.getItem('isBanned') !== 'true') {
             document.addEventListener('contextmenu', event => event.preventDefault()); 
 
