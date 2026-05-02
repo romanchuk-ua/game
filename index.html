@@ -293,7 +293,7 @@
         .site-footer p { margin: 8px 0; font-size: 0.95rem; }
         
         .site-footer .copyright {
-            font-weight: 500; /* Зроблено не таким жирним */
+            font-weight: 500;
             color: var(--text-main);
             font-size: 1.2rem;
             letter-spacing: 1px;
@@ -636,10 +636,10 @@
         const img2 = new Image(); img2.src = 'img/2.png';
         img1.onerror = () => cursor.classList.add('fallback');
 
+        // ВИПРАВЛЕНА ФУНКЦІЯ ХОВЕРІВ (не ламає інші події кліку)
         const attachHoverEffects = () => {
-            const hoverElements = document.querySelectorAll('.hoverable');
-            hoverElements.forEach(el => { el.replaceWith(el.cloneNode(true)); });
-            document.querySelectorAll('.hoverable').forEach(el => {
+            document.querySelectorAll('.hoverable:not(.hover-attached)').forEach(el => {
+                el.classList.add('hover-attached');
                 el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
                 el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
             });
@@ -826,7 +826,7 @@
                 if(activeTheme === 'dark-blue') currentThemeText.innerText = t.themeBlue;
                 if(activeTheme === 'white') currentThemeText.innerText = t.themeWhite;
                 
-                attachHoverEffects(); // Оновлюємо ефекти для нових лінків у футері
+                attachHoverEffects(); // Оновлюємо ефекти для нових елементів без помилок
             });
         });
     </script>
