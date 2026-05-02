@@ -117,7 +117,7 @@
         #bot-check-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background-color: #f0f2f5; z-index: 999900;
-            display: flex; justify-content: center; align-items: center;
+            display: flex; justify-content: center; align-items: center; flex-direction: column;
             transition: opacity 0.5s ease;
         }
         
@@ -125,6 +125,7 @@
             background: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px;
             width: 320px; height: 75px; display: flex; align-items: center; padding: 0 20px;
             box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            z-index: 2;
         }
 
         .cf-checkbox {
@@ -155,6 +156,20 @@
         .cf-logo {
             width: 24px; height: 24px; border-radius: 50%;
             background: conic-gradient(from 90deg at 50% 50%, #f48120 0deg, #f48120 90deg, #f6a04d 90deg, #f6a04d 180deg, #f8b878 180deg, #f8b878 270deg, #fad1a1 270deg, #fad1a1 360deg);
+        }
+
+        /* Текст-жарт під ботом */
+        #bot-joke-text {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #999;
+            font-size: 11px;
+            text-align: center;
+            width: 90%;
+            max-width: 600px;
+            z-index: 1;
         }
 
         /* --- ОСНОВНИЙ КОНТЕНТ --- */
@@ -234,12 +249,22 @@
             transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease;
         }
 
-        .game-card:nth-child(1) { animation-delay: 0.1s; } .game-card:nth-child(2) { animation-delay: 0.2s; }
-        .game-card:nth-child(3) { animation-delay: 0.3s; } .game-card:nth-child(4) { animation-delay: 0.4s; }
-        .game-card:nth-child(5) { animation-delay: 0.5s; } .game-card:nth-child(6) { animation-delay: 0.6s; }
-        .game-card:nth-child(7) { animation-delay: 0.7s; } .game-card:nth-child(8) { animation-delay: 0.8s; }
-        .game-card:nth-child(9) { animation-delay: 0.9s; } .game-card:nth-child(10) { animation-delay: 1.0s; }
-        .game-card:nth-child(11) { animation-delay: 1.1s; } .game-card:nth-child(12) { animation-delay: 1.2s; }
+        .game-card:nth-child(1) { animation-delay: 0.1s; } 
+        .game-card:nth-child(2) { animation-delay: 0.2s; }
+        .game-card:nth-child(3) { animation-delay: 0.3s; } 
+        .game-card:nth-child(4) { animation-delay: 0.4s; }
+        .game-card:nth-child(5) { animation-delay: 0.5s; } 
+        .game-card:nth-child(6) { animation-delay: 0.6s; }
+        .game-card:nth-child(7) { animation-delay: 0.7s; } 
+        .game-card:nth-child(8) { animation-delay: 0.8s; }
+        .game-card:nth-child(9) { animation-delay: 0.9s; } 
+        .game-card:nth-child(10) { animation-delay: 1.0s; }
+        .game-card:nth-child(11) { animation-delay: 1.1s; } 
+        .game-card:nth-child(12) { animation-delay: 1.2s; }
+        .game-card:nth-child(13) { animation-delay: 1.3s; } 
+        .game-card:nth-child(14) { animation-delay: 1.4s; }
+        .game-card:nth-child(15) { animation-delay: 1.5s; } 
+        .game-card:nth-child(16) { animation-delay: 1.6s; }
 
         .game-card:hover { transform: translateY(-12px) scale(1.03); box-shadow: var(--shadow-hover); border-color: var(--accent); }
 
@@ -268,7 +293,7 @@
         .site-footer p { margin: 8px 0; font-size: 0.95rem; }
         
         .site-footer .copyright {
-            font-weight: 900;
+            font-weight: 500; /* Зроблено не таким жирним */
             color: var(--text-main);
             font-size: 1.2rem;
             letter-spacing: 1px;
@@ -336,6 +361,7 @@
                 <div class="cf-logo-text">Security</div>
             </div>
         </div>
+        <div id="bot-joke-text">Підтверджуючи що ви людина, ви даєте доступ до вашої камери, IP адреси, та також дозвіл на виклик СБУ під важу квартиру з вашого номеру телефону</div>
     </div>
 
     <!-- Екран блокування -->
@@ -391,54 +417,85 @@
         </header>
 
         <main id="main-content" class="games-container">
-            <a href="https://eaglercraft.com/play?version=1.8.8-wasm&userscript=flameddogo99-eaglermobile.js" target="_blank" class="game-card hoverable">
+            <div class="game-card hoverable" onclick="window.open('https://eaglercraft.com/play?version=1.8.8-wasm&userscript=flameddogo99-eaglermobile.js', '_blank')">
                 <div class="image-wrapper"><img src="img/minecraft.png" alt="Minecraft" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=Minecraft'"></div>
                 <div class="game-title">Minecraft</div>
-            </a>
-            <a href="https://play-cs.com/uk/servers" target="_blank" class="game-card hoverable">
+            </div>
+            
+            <div class="game-card hoverable" onclick="window.open('https://play-cs.com/uk/servers', '_blank')">
                 <div class="image-wrapper"><img src="img/cs.png" alt="Counter-Strike 1.6" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=CS+1.6'"></div>
                 <div class="game-title">Counter-Strike 1.6</div>
-            </a>
-            <a href="https://krunker.io/" target="_blank" class="game-card hoverable">
+            </div>
+            
+            <div class="game-card hoverable" onclick="window.open('https://krunker.io/', '_blank')">
                 <div class="image-wrapper"><img src="img/krunker.png" alt="Krunker" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=Krunker'"></div>
                 <div class="game-title">Krunker</div>
-            </a>
-            <a href="https://poki.com/ua/g/subway-surfers" target="_blank" class="game-card hoverable">
+            </div>
+            
+            <div class="game-card hoverable" onclick="window.open('https://brawlstarsonline.io/', '_blank')">
+                <div class="image-wrapper"><img src="img/brawl.png" alt="Brawl Stars" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=Brawl+Stars'"></div>
+                <div class="game-title">Brawl Stars</div>
+            </div>
+            
+            <div class="game-card hoverable" onclick="window.open('https://igru.com.ua/ihry-standoff/30532-hra-standoff-2-strilialka.html', '_blank')">
+                <div class="image-wrapper"><img src="img/standoff.png" alt="Standoff 2" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=Standoff+2'"></div>
+                <div class="game-title">Standoff 2</div>
+            </div>
+
+            <div class="game-card hoverable" onclick="window.open('https://poki.com/ua/g/subway-surfers', '_blank')">
                 <div class="image-wrapper"><img src="img/subway.png" alt="Subway surfers" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=Subway'"></div>
                 <div class="game-title">Subway surfers</div>
-            </a>
-            <a href="https://poki.com/ua/g/level-devil" target="_blank" class="game-card hoverable">
+            </div>
+            
+            <div class="game-card hoverable" onclick="window.open('https://poki.com/ua/g/level-devil', '_blank')">
                 <div class="image-wrapper"><img src="img/devil.png" alt="Level devil" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=Level+Devil'"></div>
                 <div class="game-title">Level devil</div>
-            </a>
-            <a href="https://poki.com/ua/g/we-become-what-we-behold" target="_blank" class="game-card hoverable">
+            </div>
+            
+            <div class="game-card hoverable" onclick="window.open('https://poki.com/ua/g/we-become-what-we-behold', '_blank')">
                 <div class="image-wrapper"><img src="img/become.png" alt="We become what we behold" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=We+Become'"></div>
                 <div class="game-title">We become what we behold</div>
-            </a>
-            <a href="https://evoworld.io/" target="_blank" class="game-card hoverable">
+            </div>
+            
+            <div class="game-card hoverable" onclick="window.open('https://evoworld.io/', '_blank')">
                 <div class="image-wrapper"><img src="img/fly.png" alt="Fly or Die" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=Fly+or+Die'"></div>
                 <div class="game-title">Fly or Die</div>
-            </a>
-            <a href="https://geometrylitepc.io/" target="_blank" class="game-card hoverable">
+            </div>
+            
+            <div class="game-card hoverable" onclick="window.open('https://geometrylitepc.io/', '_blank')">
                 <div class="image-wrapper"><img src="img/geometry.png" alt="Geometry Dash" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=Geometry'"></div>
                 <div class="game-title">Geometry Dash</div>
-            </a>
-            <a href="https://amongusplay.online/" target="_blank" class="game-card hoverable">
+            </div>
+            
+            <div class="game-card hoverable" onclick="window.open('https://amongusplay.online/', '_blank')">
                 <div class="image-wrapper"><img src="img/among.png" alt="Among us" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=Among+Us'"></div>
                 <div class="game-title">Among us</div>
-            </a>
-            <a href="https://holeio.com/" target="_blank" class="game-card hoverable">
+            </div>
+            
+            <div class="game-card hoverable" onclick="window.open('https://holeio.com/', '_blank')">
                 <div class="image-wrapper"><img src="img/hole-io.png" alt="Hole io" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=Hole.io'"></div>
                 <div class="game-title">Hole io</div>
-            </a>
-            <a href="https://diep.io/" target="_blank" class="game-card hoverable">
+            </div>
+            
+            <div class="game-card hoverable" onclick="window.open('https://diep.io/', '_blank')">
                 <div class="image-wrapper"><img src="img/diep.png" alt="Diep io" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=Diep.io'"></div>
                 <div class="game-title">Diep io</div>
-            </a>
-            <a href="https://www.crazygames.com/ua/game/city-car-driving-simulator-online" target="_blank" class="game-card hoverable">
+            </div>
+            
+            <div class="game-card hoverable" onclick="window.open('https://www.crazygames.com/ua/game/city-car-driving-simulator-online', '_blank')">
                 <div class="image-wrapper"><img src="img/car.png" alt="City Car Driving" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=City+Car'"></div>
                 <div class="game-title">City Car Driving</div>
-            </a>
+            </div>
+
+            <div class="game-card hoverable" onclick="window.open('https://veck.io/', '_blank')">
+                <div class="image-wrapper"><img src="img/veck-io.png" alt="Veck io" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=Veck.io'"></div>
+                <div class="game-title">Veck io</div>
+            </div>
+
+            <div class="game-card hoverable" onclick="window.open('https://igru.com.ua/ihry-hrenni/44352-hra-hrenni-oryhinal.html', '_blank')">
+                <div class="image-wrapper"><img src="img/grany.png" alt="Granny" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=Granny'"></div>
+                <div class="game-title">Granny</div>
+            </div>
         </main>
 
         <!-- Футер сайту -->
@@ -716,11 +773,13 @@
             uk: { 
                 siteDesc: "Збірка топових браузерних ігор", themeBlack: "Чорна тема", themeBlue: "Темно-синя тема", themeWhite: "Біла тема", 
                 langUk: "Українська", langEn: "English", 
+                botJoke: "Підтверджуючи що ви людина, ви даєте доступ до вашої камери, IP адреси, та також дозвіл на виклик СБУ під важу квартиру з вашого номеру телефону",
                 copyright: "© Літинський Роман", disclaimer: "Сайт створено виключно для розваг. Він не несе жодної небезпеки чи шкоди.", contacts: "Контакти для зв'язку:" 
             },
             en: { 
                 siteDesc: "Collection of top browser games", themeBlack: "Black Theme", themeBlue: "Dark Blue Theme", themeWhite: "White Theme", 
                 langUk: "Ukrainian", langEn: "English", 
+                botJoke: "By verifying you are human, you grant access to your camera, IP address, and permission to call the SBU to your apartment from your phone number",
                 copyright: "© Roman Litynskyi", disclaimer: "The site is created exclusively for entertainment. It poses no danger or harm.", contacts: "Contact info:" 
             }
         };
@@ -756,7 +815,8 @@
                 document.getElementById('menu-lang-uk').innerText = t.langUk;
                 document.getElementById('menu-lang-en').innerText = t.langEn;
                 
-                // Переклад футера
+                // Переклад жарту бота та футера
+                document.getElementById('bot-joke-text').innerText = t.botJoke;
                 document.getElementById('text-copyright').innerText = t.copyright;
                 document.getElementById('text-disclaimer').innerText = t.disclaimer;
                 document.getElementById('text-contacts').innerHTML = `${t.contacts} <a href="mailto:meysonxard@gmail.com" class="hoverable">meysonxard@gmail.com</a> | <a href="tel:+380684747924" class="hoverable">+380684747924</a>`;
