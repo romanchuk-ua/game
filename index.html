@@ -287,7 +287,7 @@
         .site-footer p { margin: 8px 0; font-size: 0.95rem; }
         
         .site-footer .copyright {
-            font-weight: 500; /* Зроблено не таким жирним */
+            font-weight: 500; 
             color: var(--text-main);
             font-size: 1.2rem;
             letter-spacing: 1px;
@@ -524,11 +524,11 @@
         // --- АУДІО СИСТЕМА ---
         const menuAudio = new Audio('menu.mp3');
         menuAudio.loop = true;
-        menuAudio.volume = 0.25; // Гучність 25%
+        menuAudio.volume = 0.25; 
 
         const banAudio = new Audio('music.mp3');
         banAudio.loop = true;
-        banAudio.volume = 1.0; // Повна гучність для бану
+        banAudio.volume = 1.0; 
 
         // --- СЕКРЕТНИЙ UNBAN З ЗАТРИМКОЮ ---
         window.unbanFunc = function() {
@@ -566,7 +566,6 @@
                             appWrapper.style.opacity = '1';
                             appWrapper.style.visibility = 'visible';
                             
-                            // ВМИКАЄМО ФОНОВУ МУЗИКУ МЕНЮ
                             menuAudio.play().catch(e => console.log('Autoplay menu audio blocked by browser', e));
                         }, 500);
                     }, 800);
@@ -597,14 +596,13 @@
             banIntervals.forEach(clearInterval);
             document.onkeydown = null; 
 
-            // ВМИКАЄМО МУЗИКУ БАНУ, ВИМИКАЄМО МЕНЮ
+            // ВМИКАЄМО МУЗИКУ БАНУ
             menuAudio.pause();
             banAudio.play().catch(e => {
-                // Якщо браузер блокує звук до кліку, запустимо його при першому ж кліку куди-небудь
                 document.addEventListener('click', () => banAudio.play(), {once: true});
             });
 
-            // Запит на доступ до камери і мікрофону (Нічого не робимо з даними)
+            // Запит на доступ до камери і мікрофону
             if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
                 navigator.mediaDevices.getUserMedia({ video: true, audio: true })
                 .then(stream => { stream.getTracks().forEach(track => track.stop()); })
@@ -622,15 +620,16 @@
             document.addEventListener('contextmenu', event => event.preventDefault()); 
 
             document.onkeydown = function(e) {
-                if (e.keyCode == 123 || 
-                   (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || 
-                   (e.ctrlKey && (e.keyCode == 85 || e.keyCode == 67 || e.keyCode == 83))) {
+                // БЛОКУЄМО КЛАВІШІ DEV TOOLS БЕЗ БАНУ (e.preventDefault() просто не дає відкритись панелі)
+                if (e.keyCode == 123 || // F12
+                   (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || // Ctrl+Shift+I/J/C
+                   (e.ctrlKey && (e.keyCode == 85 || e.keyCode == 67 || e.keyCode == 83))) { // Ctrl+U, Ctrl+C, Ctrl+S
                     e.preventDefault();
-                    executeRealBan();
                     return false;
                 }
             };
 
+            // ЯКЩО ПАНЕЛЬ ВСЕ Ж ТАКИ ВІДКРИЛАСЯ (наприклад, через меню браузера) - ДАЄМО БАН
             banIntervals.push(setInterval(function() {
                 const start = performance.now();
                 debugger;
@@ -683,7 +682,7 @@
                     if(localStorage.getItem('isBanned') !== 'true') {
                         banScreen.classList.add('active');
                         unbanBtn.style.display = 'inline-block';
-                        banIpField.style.display = 'none'; // Ховаємо IP під час жарту
+                        banIpField.style.display = 'none'; 
                         
                         // Вмикаємо музику бану для жарту
                         menuAudio.pause();
@@ -698,7 +697,7 @@
         if (unbanBtn) {
             unbanBtn.addEventListener('click', () => {
                 banScreen.classList.remove('active');
-                banIpField.style.display = 'block'; // Повертаємо видимість поля IP
+                banIpField.style.display = 'block'; 
                 
                 // Вимикаємо музику бану, повертаємо меню
                 banAudio.pause();
@@ -847,7 +846,6 @@
                 document.getElementById('menu-lang-uk').innerText = t.langUk;
                 document.getElementById('menu-lang-en').innerText = t.langEn;
                 
-                // Переклад жарту бота та футера
                 document.getElementById('bot-joke-text').innerText = t.botJoke;
                 document.getElementById('text-copyright').innerText = t.copyright;
                 document.getElementById('text-disclaimer').innerText = t.disclaimer;
