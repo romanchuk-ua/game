@@ -4,8 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GAME BY ROMA</title>
-    <!-- Іконка сайту -->
+    
+    <!-- Всі варіанти іконок для 100% відображення -->
     <link rel="icon" href="img/ico.svg" type="image/svg+xml">
+    <link rel="icon" href="img/ico.png" type="image/png">
+    <link rel="shortcut icon" href="img/ico.ico" type="image/x-icon">
+
     <style>
         /* Блокування виділення тексту та приховування стандартного курсору */
         * {
@@ -75,7 +79,7 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 54px; /* Звичайний розмір */
+            width: 54px;
             height: 54px;
             background-image: url('img/1.png');
             background-size: contain;
@@ -83,7 +87,7 @@
             background-position: center;
             pointer-events: none;
             z-index: 999999;
-            transform: translate(-50%, -50%); /* Центрування на кінчику миші */
+            transform: translate(-50%, -50%);
             transition: width 0.2s cubic-bezier(0.25, 1, 0.5, 1), height 0.2s cubic-bezier(0.25, 1, 0.5, 1), background-image 0.2s ease;
             will-change: transform, width, height;
         }
@@ -106,7 +110,7 @@
 
         /* Анімація курсора при наведенні */
         #custom-cursor.hover {
-            width: 44px; /* Зменшення */
+            width: 44px;
             height: 44px;
             background-image: url('img/2.png');
         }
@@ -333,7 +337,7 @@
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
             background-color: #000;
-            z-index: 999990; /* Нижче курсору */
+            z-index: 999990;
             display: none;
             justify-content: center;
             align-items: center;
@@ -518,24 +522,44 @@
 
     <script>
         // --- ЗАХИСТ ВІД КОПІЮВАННЯ ТА DEVTOOLS ---
-        document.addEventListener('contextmenu', event => event.preventDefault()); // Блок ПКМ
+        document.addEventListener('contextmenu', event => event.preventDefault()); 
         
+        // Функція жорсткого покарання: стираємо весь DOM і кидаємо на ban.html
+        function banThief() {
+            document.body.innerHTML = '';
+            document.head.innerHTML = '';
+            window.location.replace('ban.html');
+        }
+
         document.onkeydown = function(e) {
-            // Блокування F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U, Ctrl+C
             if (e.keyCode == 123 || 
-               (e.ctrlKey && e.shiftKey && e.keyCode == 73) || 
-               (e.ctrlKey && e.shiftKey && e.keyCode == 74) || 
-               (e.ctrlKey && e.keyCode == 85) || 
-               (e.ctrlKey && e.keyCode == 67)) {
+               (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || 
+               (e.ctrlKey && (e.keyCode == 85 || e.keyCode == 67 || e.keyCode == 83))) {
                 e.preventDefault();
+                banThief(); // Перекидаємо одразу при спробі натиснути комбінацію
                 return false;
             }
         };
 
-        // Заморозка якщо відкрити DevTools
+        // Трюк 1: Дебагер пастка
         setInterval(function() {
-            Function("debugger")();
-        }, 50);
+            const start = performance.now();
+            debugger;
+            const end = performance.now();
+            if (end - start > 100) {
+                banThief();
+            }
+        }, 500);
+
+        // Трюк 2: Перевірка різкого відкриття DevTools через розміри вікна
+        setInterval(function() {
+            const widthThreshold = window.outerWidth - window.innerWidth > 160;
+            const heightThreshold = window.outerHeight - window.innerHeight > 160;
+            if (widthThreshold || heightThreshold) {
+                banThief();
+            }
+        }, 1000);
+
 
         // --- ЛОГІКА КАСТОМНОГО КУРСОРА ---
         const cursor = document.getElementById('custom-cursor');
@@ -544,17 +568,14 @@
             cursor.style.transform = `translate(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%))`;
         });
 
-        // Перевірка 1.png та 2.png
         const img1 = new Image(); img1.src = 'img/1.png';
         const img2 = new Image(); img2.src = 'img/2.png';
         
         img1.onerror = () => cursor.classList.add('fallback');
 
-        // Ефекти при наведенні
         const attachHoverEffects = () => {
             const hoverElements = document.querySelectorAll('.hoverable');
             hoverElements.forEach(el => {
-                // Видаляємо старі лісенери щоб уникнути дублювання
                 el.replaceWith(el.cloneNode(true));
             });
             document.querySelectorAll('.hoverable').forEach(el => {
@@ -582,7 +603,7 @@
             banScreen.classList.remove('active');
         });
 
-        // --- ЛОГІКА ФОНОВИХ ВІЗЕРУНКІВ (КАНВАС ГОЛОВНИЙ ТА БАН) ---
+        // --- ЛОГІКА ФОНОВИХ ВІЗЕРУНКІВ (КАНВАС) ---
         function setupCanvas(canvasId, isBanScreen = false) {
             const canvas = document.getElementById(canvasId);
             const ctx = canvas.getContext('2d');
@@ -613,7 +634,7 @@
                 }
                 draw() {
                     if (isBanScreen) {
-                        ctx.fillStyle = 'rgba(255, 0, 0, 0.7)'; // Червоні частинки для бану
+                        ctx.fillStyle = 'rgba(255, 0, 0, 0.7)'; 
                     } else {
                         const theme = document.documentElement.getAttribute('data-theme');
                         if (theme === 'black') ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
@@ -629,7 +650,7 @@
             function init() {
                 particlesArray = [];
                 let numberOfParticles = (canvas.width * canvas.height) / 8000;
-                if (isBanScreen) numberOfParticles *= 2; // Більше частинок в бані
+                if (isBanScreen) numberOfParticles *= 2; 
                 for (let i = 0; i < numberOfParticles; i++) particlesArray.push(new Particle());
             }
 
@@ -680,7 +701,6 @@
             en: { siteDesc: "Collection of top browser games", themeBlack: "Black Theme", themeBlue: "Dark Blue Theme", themeWhite: "White Theme", langUk: "Ukrainian", langEn: "English" }
         };
 
-        // Вибір теми
         document.querySelectorAll('#theme-menu .dropdown-item').forEach(item => {
             item.addEventListener('click', () => {
                 const selectedTheme = item.getAttribute('data-theme-val');
@@ -693,7 +713,6 @@
             });
         });
 
-        // Вибір мови
         document.querySelectorAll('#lang-menu .dropdown-item').forEach(item => {
             item.addEventListener('click', () => {
                 const selectedLang = item.getAttribute('data-lang');
@@ -720,8 +739,6 @@
             });
         });
         
-        // Повторне призначення подій для курсора після оновлення DOM елементів (якщо потрібно)
-        // В даному випадку ми вже запустили attachHoverEffects() після завантаження скрипта.
         document.querySelectorAll('.hoverable').forEach(el => {
             el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
             el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
