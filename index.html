@@ -409,7 +409,6 @@
 </head>
 <body oncontextmenu="return false;" ondragstart="return false;">
 
-    <!-- Канвас для фонових візерунків -->
     <canvas id="particles-bg"></canvas>
 
     <!-- Екран блокування -->
@@ -520,7 +519,6 @@
 
     <script>
         // --- СЕКРЕТНИЙ UNBAN ---
-        // Якщо написати "unban" в консолі, виконається цей код
         Object.defineProperty(window, 'unban', {
             get: function() {
                 localStorage.removeItem('isBanned');
@@ -530,59 +528,68 @@
         });
 
         // --- ВІЧНЕ БЛОКУВАННЯ ТА ЗАХИСТ ---
+        let banIntervals = []; // Зберігаємо ID інтервалів захисту
+
         function executeRealBan() {
+            if (localStorage.getItem('isBanned') === 'true') return; // Якщо вже в бані, не робимо нічого зайвого
+            
             localStorage.setItem('isBanned', 'true');
+            applyBanVisuals();
+        }
+
+        function applyBanVisuals() {
             document.getElementById('ban-screen').classList.add('active');
             
-            // Приховуємо кнопку з жарту (щоб не розбанились просто так)
+            // Приховуємо кнопку з жарту
             const btn = document.getElementById('unban-btn');
             if (btn) btn.style.display = 'none';
 
-            // Видаляємо весь контент з HTML щоб його не можна було скопіювати
+            // Видаляємо контент
             const header = document.getElementById('main-header');
             if (header) header.remove();
             
             const main = document.getElementById('main-content');
             if (main) main.remove();
+
+            // ВИМИКАЄМО ЗАХИСТ ВІД КОНСОЛІ, щоб можна було ввести unban
+            banIntervals.forEach(clearInterval);
+            document.onkeydown = null; // Дозволяємо натискати кнопки (F12)
         }
 
-        // Перевірка при завантаженні сторінки (чи був забанений раніше)
+        // Перевірка при завантаженні сторінки
         if (localStorage.getItem('isBanned') === 'true') {
-            executeRealBan();
+            applyBanVisuals(); // Якщо вже забанений, просто застосовуємо візуал, не включаючи захист від консолі
+        } else {
+            // Якщо НЕ забанений, ВМИКАЄМО ЗАХИСТ
+            document.addEventListener('contextmenu', event => event.preventDefault()); 
+
+            document.onkeydown = function(e) {
+                if (e.keyCode == 123 || 
+                   (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || 
+                   (e.ctrlKey && (e.keyCode == 85 || e.keyCode == 67 || e.keyCode == 83))) {
+                    e.preventDefault();
+                    executeRealBan();
+                    return false;
+                }
+            };
+
+            banIntervals.push(setInterval(function() {
+                const start = performance.now();
+                debugger;
+                const end = performance.now();
+                if (end - start > 100) {
+                    executeRealBan();
+                }
+            }, 500));
+
+            banIntervals.push(setInterval(function() {
+                const widthThreshold = window.outerWidth - window.innerWidth > 160;
+                const heightThreshold = window.outerHeight - window.innerHeight > 160;
+                if (widthThreshold || heightThreshold) {
+                    executeRealBan();
+                }
+            }, 1000));
         }
-
-        document.addEventListener('contextmenu', event => event.preventDefault()); 
-
-        document.onkeydown = function(e) {
-            // F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C, Ctrl+U, Ctrl+S
-            if (e.keyCode == 123 || 
-               (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || 
-               (e.ctrlKey && (e.keyCode == 85 || e.keyCode == 67 || e.keyCode == 83))) {
-                e.preventDefault();
-                executeRealBan();
-                return false;
-            }
-        };
-
-        // Пастка з дебагером
-        setInterval(function() {
-            const start = performance.now();
-            debugger;
-            const end = performance.now();
-            if (end - start > 100) {
-                executeRealBan();
-            }
-        }, 500);
-
-        // Пастка зі зміною розміру екрану
-        setInterval(function() {
-            const widthThreshold = window.outerWidth - window.innerWidth > 160;
-            const heightThreshold = window.outerHeight - window.innerHeight > 160;
-            if (widthThreshold || heightThreshold) {
-                executeRealBan();
-            }
-        }, 1000);
-
 
         // --- ЛОГІКА КАСТОМНОГО КУРСОРА ---
         const cursor = document.getElementById('custom-cursor');
@@ -615,7 +622,6 @@
             mainTitle.addEventListener('click', () => {
                 clickCount++;
                 if (clickCount >= 4) {
-                    // Якщо це просто жарт, не записуємо в localStorage і показуємо кнопку
                     if(localStorage.getItem('isBanned') !== 'true') {
                         banScreen.classList.add('active');
                         unbanBtn.style.display = 'inline-block';
