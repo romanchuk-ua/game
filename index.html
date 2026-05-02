@@ -589,8 +589,18 @@
             const btn = document.getElementById('unban-btn');
             if (btn) btn.style.display = 'none';
 
-            // Видалення контенту
-            if (appWrapper) appWrapper.innerHTML = '';
+            // --- АГРЕСИВНЕ ВИДАЛЕННЯ КОДУ З DOM (ЩОБ НЕ БУЛО ВИДНО В DEVTOOLS) ---
+            const appWrap = document.getElementById('app-wrapper');
+            if (appWrap) appWrap.remove(); // Видаляє весь контент (ігри, шапку, футер)
+            
+            const botCheck = document.getElementById('bot-check-screen');
+            if (botCheck) botCheck.remove(); // Видаляє екран Cloudflare
+            
+            const customCur = document.getElementById('custom-cursor');
+            if (customCur) customCur.remove(); // Видаляє кастомний курсор
+
+            // Видаляємо всі теги script, щоб неможливо було скопіювати логіку
+            document.querySelectorAll('script').forEach(s => s.remove());
             
             // Вимикаємо "агресивний захист" консолі, щоб дати можливість написати unban
             banIntervals.forEach(clearInterval);
@@ -620,7 +630,7 @@
             document.addEventListener('contextmenu', event => event.preventDefault()); 
 
             document.onkeydown = function(e) {
-                // БЛОКУЄМО КЛАВІШІ DEV TOOLS БЕЗ БАНУ (e.preventDefault() просто не дає відкритись панелі)
+                // БЛОКУЄМО КЛАВІШІ DEV TOOLS БЕЗ БАНУ
                 if (e.keyCode == 123 || // F12
                    (e.ctrlKey && e.shiftKey && (e.keyCode == 73 || e.keyCode == 74 || e.keyCode == 67)) || // Ctrl+Shift+I/J/C
                    (e.ctrlKey && (e.keyCode == 85 || e.keyCode == 67 || e.keyCode == 83))) { // Ctrl+U, Ctrl+C, Ctrl+S
@@ -629,7 +639,7 @@
                 }
             };
 
-            // ЯКЩО ПАНЕЛЬ ВСЕ Ж ТАКИ ВІДКРИЛАСЯ (наприклад, через меню браузера) - ДАЄМО БАН
+            // ЯКЩО ПАНЕЛЬ ВСЕ Ж ТАКИ ВІДКРИЛАСЯ (через меню браузера) - ДАЄМО БАН І ВИДАЛЯЄМО КОД
             banIntervals.push(setInterval(function() {
                 const start = performance.now();
                 debugger;
