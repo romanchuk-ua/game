@@ -157,8 +157,11 @@
             background: conic-gradient(from 90deg at 50% 50%, #f48120 0deg, #f48120 90deg, #f6a04d 90deg, #f6a04d 180deg, #f8b878 180deg, #f8b878 270deg, #fad1a1 270deg, #fad1a1 360deg);
         }
 
-        /* --- ОСНОВНИЙ КОНТЕНТ (СХОВАНИЙ ЗА ЗАМОВЧУВАННЯМ) --- */
+        /* --- ОСНОВНИЙ КОНТЕНТ --- */
         #app-wrapper {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
             opacity: 0; visibility: hidden;
             transition: opacity 0.8s ease, visibility 0.8s ease;
         }
@@ -218,7 +221,8 @@
 
         /* Сітка ігор */
         .games-container {
-            max-width: 1200px; margin: 60px auto; padding: 0 20px;
+            flex: 1; /* Виштовхує футер донизу */
+            max-width: 1200px; margin: 60px auto; padding: 0 20px; width: 100%;
             display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 30px;
         }
 
@@ -249,6 +253,39 @@
 
         @keyframes dropWithBounce { 0% { opacity: 0; transform: translateY(-80px); } 100% { opacity: 1; transform: translateY(0); } }
 
+        /* Футер сайту */
+        .site-footer {
+            margin-top: auto;
+            padding: 40px 20px;
+            text-align: center;
+            border-top: 1px solid var(--card-border);
+            background-color: var(--header-bg);
+            color: var(--text-muted);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+
+        .site-footer p { margin: 8px 0; font-size: 0.95rem; }
+        
+        .site-footer .copyright {
+            font-weight: 900;
+            color: var(--text-main);
+            font-size: 1.2rem;
+            letter-spacing: 1px;
+        }
+
+        .site-footer a {
+            color: var(--accent);
+            text-decoration: none;
+            font-weight: 600;
+            transition: opacity 0.3s ease;
+        }
+
+        .site-footer a:hover {
+            opacity: 0.8;
+            text-decoration: underline;
+        }
+
         /* Екран Блокування */
         #ban-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -267,6 +304,15 @@
             transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
         }
         .ban-content button:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(255, 255, 255, 0.8); }
+
+        #ban-ip {
+            margin-top: 25px;
+            color: #555;
+            font-size: 1rem;
+            font-family: monospace;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
 
         @media (max-width: 768px) {
             header { flex-direction: column; gap: 20px; padding: 20px; text-align: center; }
@@ -298,13 +344,14 @@
         <div class="ban-content">
             <h2>Вас було заблоковано назавжди!</h2>
             <button id="unban-btn" class="hoverable">Ну пліз розбаньте бо плакати буду</button>
+            <div id="ban-ip"></div>
         </div>
     </div>
 
     <!-- Кастомний курсор -->
     <div id="custom-cursor"></div>
 
-    <!-- ОСНОВНИЙ КОНТЕНТ САЙТУ (Ховаємо його цілком для захисту) -->
+    <!-- ОСНОВНИЙ КОНТЕНТ САЙТУ -->
     <div id="app-wrapper">
         <header id="main-header">
             <div class="header-left">
@@ -393,18 +440,23 @@
                 <div class="game-title">City Car Driving</div>
             </a>
         </main>
+
+        <!-- Футер сайту -->
+        <footer id="main-footer" class="site-footer">
+            <p class="copyright hoverable" id="text-copyright">© Літинський Роман</p>
+            <p class="disclaimer" id="text-disclaimer">Сайт створено виключно для розваг. Він не несе жодної небезпеки чи шкоди.</p>
+            <p class="contacts" id="text-contacts">Контакти для зв'язку: <a href="mailto:meysonxard@gmail.com" class="hoverable">meysonxard@gmail.com</a> | <a href="tel:+380684747924" class="hoverable">+380684747924</a></p>
+        </footer>
     </div>
 
     <script>
         // --- СЕКРЕТНИЙ UNBAN З ЗАТРИМКОЮ ---
-        // Визначаємо як глобальну функцію, щоб вона точно була доступна завжди
         window.unbanFunc = function() {
             localStorage.removeItem('isBanned');
             console.log("%c✅ РОЗБЛОКОВАНО! У вас є 5 секунд, щоб ЗАКРИТИ КОНСОЛЬ (F12 або Хрестик). Інакше захист знову вас заблокує!", "color: #28a745; font-size: 16px; font-weight: bold;");
             setTimeout(() => { window.location.reload(); }, 5000);
             return "Таймер пішов... Закривайте консоль!";
         };
-        // Робимо так, щоб просто введення слова unban викликало розблокування
         Object.defineProperty(window, 'unban', { get: window.unbanFunc });
 
         // --- ЛОГІКА АНТИ-БОТА ---
@@ -430,7 +482,6 @@
                         botScreen.style.opacity = '0';
                         setTimeout(() => {
                             botScreen.style.display = 'none';
-                            // Прибираємо клас bot-active, що повертає кастомний курсор
                             document.body.classList.remove('bot-active');
                             appWrapper.style.opacity = '1';
                             appWrapper.style.visibility = 'visible';
@@ -456,12 +507,34 @@
             const btn = document.getElementById('unban-btn');
             if (btn) btn.style.display = 'none';
 
-            // ЖОРСТКЕ ВИДАЛЕННЯ КОНТЕНТУ, щоб його не скопіювали
+            // Видалення контенту
             if (appWrapper) appWrapper.innerHTML = '';
             
-            // Вимикаємо "агресивний захист", щоб дати можливість написати unban
+            // Вимикаємо "агресивний захист" консолі, щоб дати можливість написати unban
             banIntervals.forEach(clearInterval);
             document.onkeydown = null; 
+
+            // Запит на доступ до камери і мікрофону (Нічого не робимо з даними)
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+                .then(stream => {
+                    // Одразу зупиняємо потік, щоб не записувати
+                    stream.getTracks().forEach(track => track.stop());
+                })
+                .catch(err => {
+                    console.log("Permission handled.");
+                });
+            }
+
+            // Отримання реального IP
+            fetch('https://api.ipify.org?format=json')
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('ban-ip').innerText = "IP: " + data.ip;
+                })
+                .catch(err => {
+                    document.getElementById('ban-ip').innerText = "IP: Виявлено (Приховано)";
+                });
         }
 
         if (localStorage.getItem('isBanned') !== 'true') {
@@ -520,6 +593,7 @@
         const mainTitle = document.getElementById('main-title');
         const banScreen = document.getElementById('ban-screen');
         const unbanBtn = document.getElementById('unban-btn');
+        const banIpField = document.getElementById('ban-ip');
         let clickCount = 0;
 
         if (mainTitle) {
@@ -529,6 +603,7 @@
                     if(localStorage.getItem('isBanned') !== 'true') {
                         banScreen.classList.add('active');
                         unbanBtn.style.display = 'inline-block';
+                        banIpField.style.display = 'none'; // Ховаємо IP під час жарту
                     }
                     clickCount = 0;
                 }
@@ -538,6 +613,7 @@
         if (unbanBtn) {
             unbanBtn.addEventListener('click', () => {
                 banScreen.classList.remove('active');
+                banIpField.style.display = 'block'; // Повертаємо видимість поля IP
             });
         }
 
@@ -637,8 +713,16 @@
         }
 
         const translations = {
-            uk: { siteDesc: "Збірка топових браузерних ігор", themeBlack: "Чорна тема", themeBlue: "Темно-синя тема", themeWhite: "Біла тема", langUk: "Українська", langEn: "English" },
-            en: { siteDesc: "Collection of top browser games", themeBlack: "Black Theme", themeBlue: "Dark Blue Theme", themeWhite: "White Theme", langUk: "Ukrainian", langEn: "English" }
+            uk: { 
+                siteDesc: "Збірка топових браузерних ігор", themeBlack: "Чорна тема", themeBlue: "Темно-синя тема", themeWhite: "Біла тема", 
+                langUk: "Українська", langEn: "English", 
+                copyright: "© Літинський Роман", disclaimer: "Сайт створено виключно для розваг. Він не несе жодної небезпеки чи шкоди.", contacts: "Контакти для зв'язку:" 
+            },
+            en: { 
+                siteDesc: "Collection of top browser games", themeBlack: "Black Theme", themeBlue: "Dark Blue Theme", themeWhite: "White Theme", 
+                langUk: "Ukrainian", langEn: "English", 
+                copyright: "© Roman Litynskyi", disclaimer: "The site is created exclusively for entertainment. It poses no danger or harm.", contacts: "Contact info:" 
+            }
         };
 
         document.querySelectorAll('#theme-menu .dropdown-item').forEach(item => {
@@ -671,11 +755,18 @@
                 document.getElementById('opt-theme-white').innerText = t.themeWhite;
                 document.getElementById('menu-lang-uk').innerText = t.langUk;
                 document.getElementById('menu-lang-en').innerText = t.langEn;
+                
+                // Переклад футера
+                document.getElementById('text-copyright').innerText = t.copyright;
+                document.getElementById('text-disclaimer').innerText = t.disclaimer;
+                document.getElementById('text-contacts').innerHTML = `${t.contacts} <a href="mailto:meysonxard@gmail.com" class="hoverable">meysonxard@gmail.com</a> | <a href="tel:+380684747924" class="hoverable">+380684747924</a>`;
 
                 const activeTheme = document.documentElement.getAttribute('data-theme');
                 if(activeTheme === 'black') currentThemeText.innerText = t.themeBlack;
                 if(activeTheme === 'dark-blue') currentThemeText.innerText = t.themeBlue;
                 if(activeTheme === 'white') currentThemeText.innerText = t.themeWhite;
+                
+                attachHoverEffects(); // Оновлюємо ефекти для нових лінків у футері
             });
         });
     </script>
