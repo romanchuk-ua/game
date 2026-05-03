@@ -27,15 +27,9 @@
         }
 
         /* --- ВИКЛЮЧЕННЯ ДЛЯ ЕКРАНУ БОТА (СТАНДАРТНИЙ КУРСОР) --- */
-        body.bot-active * {
-            cursor: auto !important;
-        }
-        body.bot-active #custom-cursor {
-            display: none !important;
-        }
-        body.bot-active .cf-checkbox {
-            cursor: pointer !important;
-        }
+        body.bot-active * { cursor: auto !important; }
+        body.bot-active #custom-cursor { display: none !important; }
+        body.bot-active .cf-checkbox { cursor: pointer !important; }
 
         /* Сучасні CSS Змінні */
         :root[data-theme="black"] {
@@ -99,158 +93,71 @@
 
         #custom-cursor.fallback { background-image: none !important; background-color: transparent; }
         #custom-cursor.fallback::after {
-            content: ''; display: block;
-            width: 15px; height: 15px; background-color: var(--accent); border-radius: 50%;
+            content: ''; display: block; width: 15px; height: 15px; background-color: var(--accent); border-radius: 50%;
             box-shadow: 0 0 10px var(--accent); transition: transform 0.2s ease;
         }
-
         #custom-cursor.hover { width: 44px; height: 44px; background-image: url('img/2.png'); }
         #custom-cursor.fallback.hover::after { transform: scale(0.7); }
 
         /* Канвас для фонових візерунків */
-        #particles-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1; pointer-events: none;
-        }
+        #particles-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
 
         /* --- СИСТЕМА АНТИ-БОТ (ФЕЙК CLOUDFLARE) --- */
         #bot-check-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #f0f2f5; z-index: 999900;
-            display: flex; justify-content: center; align-items: center; flex-direction: column;
+            background-color: #f0f2f5; z-index: 999900; display: flex; justify-content: center; align-items: center; flex-direction: column;
             transition: opacity 0.5s ease;
         }
         
         .cf-box {
-            background: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px;
-            width: 320px; height: 75px; display: flex; align-items: center; padding: 0 20px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            z-index: 2;
+            background: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; width: 320px; height: 75px; display: flex; align-items: center; padding: 0 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); z-index: 2;
         }
 
-        .cf-checkbox {
-            width: 28px; height: 28px; border: 2px solid #c1c1c1; border-radius: 4px;
-            display: flex; justify-content: center; align-items: center;
-            transition: 0.2s; position: relative;
-        }
+        .cf-checkbox { width: 28px; height: 28px; border: 2px solid #c1c1c1; border-radius: 4px; display: flex; justify-content: center; align-items: center; transition: 0.2s; position: relative; }
         .cf-checkbox:hover { border-color: #888; }
-        
-        .cf-checkbox.loading {
-            border-color: #e0e0e0; border-top-color: #333; border-radius: 50%;
-            animation: cf-spin 1s linear infinite;
-        }
-        .cf-checkbox.success {
-            border-color: #28a745; background-color: #28a745; animation: none;
-        }
-        .cf-checkbox.success::after {
-            content: ''; display: block; width: 6px; height: 12px;
-            border: solid white; border-width: 0 2px 2px 0;
-            transform: rotate(45deg); margin-bottom: 3px;
-        }
+        .cf-checkbox.loading { border-color: #e0e0e0; border-top-color: #333; border-radius: 50%; animation: cf-spin 1s linear infinite; }
+        .cf-checkbox.success { border-color: #28a745; background-color: #28a745; animation: none; }
+        .cf-checkbox.success::after { content: ''; display: block; width: 6px; height: 12px; border: solid white; border-width: 0 2px 2px 0; transform: rotate(45deg); margin-bottom: 3px; }
 
         @keyframes cf-spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
         .cf-text { margin-left: 15px; font-size: 14px; font-weight: 500; color: #333; }
         .cf-logo-area { margin-left: auto; display: flex; flex-direction: column; align-items: center; }
         .cf-logo-text { font-size: 10px; color: #888; margin-top: 4px; }
-        .cf-logo {
-            width: 24px; height: 24px; border-radius: 50%;
-            background: conic-gradient(from 90deg at 50% 50%, #f48120 0deg, #f48120 90deg, #f6a04d 90deg, #f6a04d 180deg, #f8b878 180deg, #f8b878 270deg, #fad1a1 270deg, #fad1a1 360deg);
-        }
+        .cf-logo { width: 24px; height: 24px; border-radius: 50%; background: conic-gradient(from 90deg at 50% 50%, #f48120 0deg, #f48120 90deg, #f6a04d 90deg, #f6a04d 180deg, #f8b878 180deg, #f8b878 270deg, #fad1a1 270deg, #fad1a1 360deg); }
 
-        /* Текст-жарт під ботом */
-        #bot-joke-text {
-            position: absolute;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            color: #999;
-            font-size: 11px;
-            text-align: center;
-            width: 90%;
-            max-width: 600px;
-            z-index: 1;
-        }
+        #bot-joke-text { position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); color: #999; font-size: 11px; text-align: center; width: 90%; max-width: 600px; z-index: 1; }
 
         /* --- ОСНОВНИЙ КОНТЕНТ --- */
-        #app-wrapper {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            opacity: 0; visibility: hidden;
-            transition: opacity 0.8s ease, visibility 0.8s ease;
-        }
+        #app-wrapper { display: flex; flex-direction: column; min-height: 100vh; opacity: 0; visibility: hidden; transition: opacity 0.8s ease, visibility 0.8s ease; }
 
         /* Шапка */
-        header {
-            background-color: var(--header-bg);
-            backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-            padding: 20px 40px; display: flex; justify-content: space-between; align-items: center;
-            border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 100;
-        }
-
+        header { background-color: var(--header-bg); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); padding: 20px 40px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--card-border); position: sticky; top: 0; z-index: 100; }
         .header-left { display: flex; flex-direction: column; gap: 4px; }
-
-        h1 {
-            font-size: 2rem; font-weight: 900; letter-spacing: 1px;
-            background: linear-gradient(to right, var(--text-main), var(--accent));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-            margin: 0; display: inline-block;
-        }
-
+        h1 { font-size: 2rem; font-weight: 900; letter-spacing: 1px; background: linear-gradient(to right, var(--text-main), var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0; display: inline-block; }
         .site-desc { font-size: 0.9rem; font-weight: 500; color: var(--text-muted); letter-spacing: 0.5px; }
 
         /* Елементи керування */
         .controls { display: flex; gap: 15px; align-items: center; }
-
         .custom-dropdown { position: relative; display: inline-block; }
-
-        .dropdown-btn {
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            padding: 10px 16px; border-radius: 12px; border: 1px solid var(--card-border);
-            background-color: var(--card-bg); color: var(--text-main);
-            font-weight: 600; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease; min-width: 160px;
-        }
-
+        .dropdown-btn { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 10px 16px; border-radius: 12px; border: 1px solid var(--card-border); background-color: var(--card-bg); color: var(--text-main); font-weight: 600; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); transition: all 0.3s ease; min-width: 160px; }
         .dropdown-btn:hover { border-color: var(--accent); transform: translateY(-2px); box-shadow: 0 6px 12px -2px rgba(0, 0, 0, 0.15); }
-
         .icon-btn { min-width: 44px; padding: 10px; font-size: 1.2rem; }
 
+        /* Кнопка CREATOR (спочатку прихована) */
+        #creator-btn { display: none; border-color: #ffaa00; color: #ffaa00; font-weight: 800; min-width: auto; text-transform: uppercase; }
+        #creator-btn:hover { background-color: #ffaa00; color: #000; box-shadow: 0 0 15px rgba(255, 170, 0, 0.5); }
+
         .flag-icon { width: 22px; height: 15px; object-fit: cover; border-radius: 3px; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
-
-        .dropdown-menu {
-            position: absolute; top: 115%; left: 50%; transform: translateX(-50%) translateY(-10px);
-            background-color: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px;
-            box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column;
-            width: 100%; opacity: 0; visibility: hidden; transition: all 0.3s ease; z-index: 200;
-        }
-
+        .dropdown-menu { position: absolute; top: 115%; left: 50%; transform: translateX(-50%) translateY(-10px); background-color: var(--card-bg); border: 1px solid var(--card-border); border-radius: 12px; box-shadow: var(--shadow); overflow: hidden; display: flex; flex-direction: column; width: 100%; opacity: 0; visibility: hidden; transition: all 0.3s ease; z-index: 200; }
         .dropdown-menu.active { opacity: 1; visibility: visible; transform: translateX(-50%) translateY(0); }
-
-        .dropdown-item {
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-            padding: 12px 16px; color: var(--text-main); font-weight: 500;
-            transition: background-color 0.2s ease, color 0.2s ease; text-align: center;
-        }
-
+        .dropdown-item { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px 16px; color: var(--text-main); font-weight: 500; transition: background-color 0.2s ease, color 0.2s ease; text-align: center; }
         .dropdown-item:hover { background-color: var(--card-hover); color: var(--accent); }
 
         /* Сітка ігор */
-        .games-container {
-            flex: 1; /* Виштовхує футер донизу */
-            max-width: 1200px; margin: 60px auto; padding: 0 20px; width: 100%;
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 30px;
-        }
-
-        .game-card {
-            background-color: var(--card-bg); border: 2px solid transparent; border-radius: 20px;
-            overflow: hidden; text-decoration: none; color: var(--text-main);
-            box-shadow: var(--shadow); display: flex; flex-direction: column; opacity: 0; 
-            animation: dropWithBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease;
-        }
-
+        .games-container { flex: 1; max-width: 1200px; margin: 60px auto; padding: 0 20px; width: 100%; display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 30px; }
+        .game-card { background-color: var(--card-bg); border: 2px solid transparent; border-radius: 20px; overflow: hidden; text-decoration: none; color: var(--text-main); box-shadow: var(--shadow); display: flex; flex-direction: column; opacity: 0; animation: dropWithBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease, border-color 0.4s ease; }
+        
         .game-card:nth-child(1) { animation-delay: 0.1s; } .game-card:nth-child(2) { animation-delay: 0.2s; }
         .game-card:nth-child(3) { animation-delay: 0.3s; } .game-card:nth-child(4) { animation-delay: 0.4s; }
         .game-card:nth-child(5) { animation-delay: 0.5s; } .game-card:nth-child(6) { animation-delay: 0.6s; }
@@ -263,77 +170,73 @@
         .game-card:nth-child(19) { animation-delay: 1.9s; } .game-card:nth-child(20) { animation-delay: 2.0s; }
 
         .game-card:hover { transform: translateY(-12px) scale(1.03); box-shadow: var(--shadow-hover); border-color: var(--accent); }
-
         .game-image { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-bottom: 1px solid var(--card-border); transition: transform 0.5s ease; }
         .game-card:hover .game-image { transform: scale(1.05); }
-
         .image-wrapper { overflow: hidden; width: 100%; aspect-ratio: 1 / 1; }
-
         .game-title { padding: 20px 15px; text-align: center; font-weight: 700; font-size: 1.15rem; letter-spacing: 0.3px; transition: color 0.3s ease; }
         .game-card:hover .game-title { color: var(--accent); }
 
         @keyframes dropWithBounce { 0% { opacity: 0; transform: translateY(-80px); } 100% { opacity: 1; transform: translateY(0); } }
 
         /* Футер сайту */
-        .site-footer {
-            margin-top: auto;
-            padding: 40px 20px;
-            text-align: center;
-            border-top: 1px solid var(--card-border);
-            background-color: var(--header-bg);
-            color: var(--text-muted);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-        }
-
+        .site-footer { margin-top: auto; padding: 40px 20px; text-align: center; border-top: 1px solid var(--card-border); background-color: var(--header-bg); color: var(--text-muted); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
         .site-footer p { margin: 8px 0; font-size: 0.95rem; }
-        
-        .site-footer .copyright {
-            font-weight: 500; 
-            color: var(--text-main);
-            font-size: 1.2rem;
-            letter-spacing: 1px;
-        }
-
-        .site-footer a {
-            color: var(--accent);
-            text-decoration: none;
-            font-weight: 600;
-            transition: opacity 0.3s ease;
-        }
-
-        .site-footer a:hover {
-            opacity: 0.8;
-            text-decoration: underline;
-        }
+        .site-footer .copyright { font-weight: 500; color: var(--text-main); font-size: 1.2rem; letter-spacing: 1px; }
+        .site-footer a { color: var(--accent); text-decoration: none; font-weight: 600; transition: opacity 0.3s ease; }
+        .site-footer a:hover { opacity: 0.8; text-decoration: underline; }
 
         /* Екран Блокування */
-        #ban-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: #000; z-index: 999990; display: none;
-            justify-content: center; align-items: center; flex-direction: column; overflow: hidden;
-        }
-
+        #ban-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #000; z-index: 999990; display: none; justify-content: center; align-items: center; flex-direction: column; overflow: hidden; }
         #ban-screen.active { display: flex; }
         #ban-particles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
-
         .ban-content { position: relative; z-index: 2; text-align: center; padding: 20px; }
         .ban-content h2 { color: #ff0000; font-size: 3rem; font-weight: 900; text-transform: uppercase; margin-bottom: 30px; text-shadow: 0 0 20px rgba(255, 0, 0, 0.8); }
-        .ban-content button {
-            background-color: #ffffff; color: #000000; border: none; padding: 15px 35px;
-            font-size: 1.2rem; font-weight: bold; border-radius: 12px;
-            transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
-        }
+        .ban-content button { background-color: #ffffff; color: #000000; border: none; padding: 15px 35px; font-size: 1.2rem; font-weight: bold; border-radius: 12px; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 0 15px rgba(255, 255, 255, 0.5); }
         .ban-content button:hover { transform: scale(1.05); box-shadow: 0 0 25px rgba(255, 255, 255, 0.8); }
+        #ban-ip { margin-top: 25px; color: #555; font-size: 1rem; font-family: monospace; font-weight: bold; letter-spacing: 1px; }
 
-        #ban-ip {
-            margin-top: 25px;
-            color: #555;
-            font-size: 1rem;
-            font-family: monospace;
-            font-weight: bold;
-            letter-spacing: 1px;
+        /* --- ПАНЕЛЬ CREATOR MODAL --- */
+        #creator-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85); z-index: 999999; display: none;
+            justify-content: center; align-items: center; backdrop-filter: blur(8px);
         }
+        /* Дозволяємо стандартний курсор всередині модального вікна для зручності заповнення */
+        #creator-modal * { cursor: auto !important; }
+        .creator-box {
+            background: var(--card-bg); border: 2px solid #ffaa00;
+            padding: 40px; border-radius: 20px; width: 90%; max-width: 450px;
+            color: var(--text-main); text-align: center; box-shadow: 0 10px 40px rgba(255, 170, 0, 0.2);
+            position: relative; animation: dropWithBounce 0.5s ease forwards;
+        }
+        .creator-box h2 { margin-bottom: 5px; color: #ffaa00; font-size: 2rem; font-weight: 900; }
+        .creator-box .online-stat {
+            color: #28a745; font-weight: bold; margin-bottom: 25px; font-size: 1rem;
+            background: rgba(40, 167, 69, 0.1); padding: 5px 15px; border-radius: 20px; display: inline-block;
+        }
+        .creator-input {
+            width: 100%; padding: 14px; margin-bottom: 15px; border-radius: 10px;
+            border: 1px solid var(--card-border); background: var(--bg-color);
+            color: var(--text-main); font-family: inherit; outline: none; font-size: 1rem;
+        }
+        .creator-input:focus { border-color: #ffaa00; }
+        .creator-file-label {
+            display: block; width: 100%; padding: 14px; margin-bottom: 20px; border-radius: 10px;
+            border: 1px dashed #ffaa00; background: rgba(255, 170, 0, 0.05);
+            color: #ffaa00; cursor: pointer; transition: 0.3s;
+        }
+        .creator-file-label:hover { background: rgba(255, 170, 0, 0.1); }
+        .creator-btn-save {
+            background: #ffaa00; color: #000; border: none; padding: 15px 20px;
+            border-radius: 10px; font-weight: 900; font-size: 1.1rem; cursor: pointer;
+            width: 100%; transition: 0.3s; text-transform: uppercase;
+        }
+        .creator-btn-save:hover { transform: scale(1.03); box-shadow: 0 0 15px rgba(255, 170, 0, 0.6); }
+        .close-creator {
+            position: absolute; top: 15px; right: 20px; font-size: 2rem;
+            cursor: pointer; color: var(--text-muted); transition: 0.3s; line-height: 1;
+        }
+        .close-creator:hover { color: #ff0000; }
 
         @media (max-width: 768px) {
             header { flex-direction: column; gap: 20px; padding: 20px; text-align: center; }
@@ -382,6 +285,9 @@
             </div>
             
             <div class="controls">
+                <!-- Секретна кнопка CREATOR -->
+                <div class="dropdown-btn hoverable" id="creator-btn">CREATOR</div>
+
                 <!-- Кнопка Звуку -->
                 <div class="dropdown-btn icon-btn hoverable" id="sound-btn" title="Звук">
                     <span id="sound-icon">🔊</span>
@@ -525,6 +431,26 @@
             <p class="disclaimer" id="text-disclaimer">Сайт створено виключно для розваг. Він не несе жодної небезпеки чи шкоди.</p>
             <p class="contacts" id="text-contacts">Контакти для зв'язку: <a href="mailto:meysonxard@gmail.com" class="hoverable">meysonxard@gmail.com</a> | <a href="tel:+380684747924" class="hoverable">+380684747924</a></p>
         </footer>
+
+        <!-- МЕНЮ CREATOR (Приховане) -->
+        <div id="creator-modal">
+            <div class="creator-box">
+                <span class="close-creator" id="close-creator-btn">&times;</span>
+                <h2>Додати гру</h2>
+                <div class="online-stat">⚡ Онлайн сайту: 1</div>
+                
+                <input type="text" id="new-game-name" class="creator-input" placeholder="Назва гри">
+                <input type="url" id="new-game-link" class="creator-input" placeholder="Посилання на гру (https://...)">
+                
+                <label for="new-game-img" class="creator-file-label">
+                    <span id="file-name-display">📁 Вибрати картинку з ПК</span>
+                </label>
+                <input type="file" id="new-game-img" accept="image/*" style="display: none;">
+                
+                <button class="creator-btn-save" id="save-game-btn">Зберегти</button>
+            </div>
+        </div>
+
     </div>
 
     <script>
@@ -586,7 +512,7 @@
                             appWrapper.style.opacity = '1';
                             appWrapper.style.visibility = 'visible';
                             
-                            menuAudio.play().catch(e => console.log('Autoplay menu audio blocked by browser', e));
+                            menuAudio.play().catch(e => console.log('Autoplay menu audio blocked', e));
                         }, 500);
                     }, 800);
                 }, 1500);
@@ -605,7 +531,7 @@
         function applyBanVisuals() {
             document.body.classList.remove('bot-active');
             
-            // --- АГРЕСИВНЕ ВИДАЛЕННЯ КОДУ З DOM (ЩОБ НЕ БУЛО ВИДНО В DEVTOOLS) ---
+            // Агресивне видалення DOM
             document.head.innerHTML = `
                 <style>
                     body { margin: 0; background-color: #000; overflow: hidden; font-family: system-ui, sans-serif; user-select: none; }
@@ -627,22 +553,11 @@
             banIntervals.forEach(clearInterval);
             document.onkeydown = null; 
 
-            // ВМИКАЄМО ПАСТКУ ДЛЯ DEVTOOLS (Те саме "Anonymous")
-            setInterval(function() {
-                Function("debugger")();
-            }, 50);
+            // Пастка Sources
+            setInterval(function() { Function("debugger")(); }, 50);
 
-            // ВМИКАЄМО МУЗИКУ БАНУ
             menuAudio.pause();
-            banAudio.play().catch(e => {
-                document.addEventListener('click', () => banAudio.play(), {once: true});
-            });
-
-            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-                navigator.mediaDevices.getUserMedia({ video: true, audio: true })
-                .then(stream => { stream.getTracks().forEach(track => track.stop()); })
-                .catch(err => { console.log("Permission handled."); });
-            }
+            banAudio.play().catch(e => { document.addEventListener('click', () => banAudio.play(), {once: true}); });
 
             fetch('https://api.ipify.org?format=json')
                 .then(response => response.json())
@@ -666,17 +581,13 @@
                 const start = performance.now();
                 Function("debugger")();
                 const end = performance.now();
-                if (end - start > 100) {
-                    executeRealBan();
-                }
+                if (end - start > 100) { executeRealBan(); }
             }, 500));
 
             banIntervals.push(setInterval(function() {
                 const widthThreshold = window.outerWidth - window.innerWidth > 160;
                 const heightThreshold = window.outerHeight - window.innerHeight > 160;
-                if (widthThreshold || heightThreshold) {
-                    executeRealBan();
-                }
+                if (widthThreshold || heightThreshold) { executeRealBan(); }
             }, 1000));
         }
 
@@ -701,17 +612,22 @@
         };
         attachHoverEffects();
 
-        // --- ЖАРТ (ПАСХАЛКА 4 КЛІКА) ---
+        // --- ЖАРТ (ПАСХАЛКА 4 КЛІКА) ТА АДМІН-ПАНЕЛЬ (10 КЛІКІВ) ---
         const mainTitle = document.getElementById('main-title');
         const banScreenJoke = document.getElementById('ban-screen');
         const unbanBtn = document.getElementById('unban-btn');
         const banIpField = document.getElementById('ban-ip');
-        let clickCount = 0;
+        
+        const copyrightText = document.getElementById('text-copyright');
+        const creatorBtn = document.getElementById('creator-btn');
+        
+        let titleClickCount = 0;
+        let adminClickCount = 0;
 
         if (mainTitle) {
             mainTitle.addEventListener('click', () => {
-                clickCount++;
-                if (clickCount >= 4) {
+                titleClickCount++;
+                if (titleClickCount >= 4) {
                     if(localStorage.getItem('isBanned') !== 'true') {
                         banScreenJoke.classList.add('active');
                         unbanBtn.style.display = 'inline-block';
@@ -719,9 +635,9 @@
                         
                         menuAudio.pause();
                         banAudio.currentTime = 0; 
-                        banAudio.play().catch(e => console.log('Autoplay ban audio blocked', e));
+                        banAudio.play().catch(e => console.log('Autoplay ban blocked'));
                     }
-                    clickCount = 0;
+                    titleClickCount = 0;
                 }
             });
         }
@@ -732,9 +648,94 @@
                 banIpField.style.display = 'block'; 
                 
                 banAudio.pause();
-                menuAudio.play().catch(e => console.log('Autoplay menu audio blocked', e));
+                menuAudio.play().catch(e => console.log('Autoplay menu blocked'));
             });
         }
+
+        // РОЗБЛОКУВАННЯ АДМІНКИ (10 кліків по копірайту)
+        if (copyrightText) {
+            copyrightText.addEventListener('click', () => {
+                adminClickCount++;
+                if (adminClickCount === 10) {
+                    // Знімаємо захист DevTools
+                    banIntervals.forEach(clearInterval);
+                    banIntervals = []; // Повністю очищуємо інтервали
+                    document.onkeydown = null; // Повертаємо клавіші (F12)
+                    
+                    // Показуємо кнопку
+                    if (creatorBtn) creatorBtn.style.display = 'flex';
+                    
+                    console.log('%c🔧 ЗАХИСТ ВИМКНЕНО. ПАНЕЛЬ CREATOR ТА DEVTOOLS ДОСТУПНІ.', 'color: #ffaa00; font-size: 16px; font-weight:bold;');
+                    adminClickCount = 0;
+                }
+            });
+        }
+
+        // --- ЛОГІКА МЕНЮ CREATOR ---
+        const creatorModal = document.getElementById('creator-modal');
+        const closeCreatorBtn = document.getElementById('close-creator-btn');
+        const saveGameBtn = document.getElementById('save-game-btn');
+        const fileInput = document.getElementById('new-game-img');
+        const fileNameDisplay = document.getElementById('file-name-display');
+
+        if (creatorBtn) creatorBtn.addEventListener('click', () => { creatorModal.style.display = 'flex'; });
+        if (closeCreatorBtn) closeCreatorBtn.addEventListener('click', () => { creatorModal.style.display = 'none'; });
+
+        // Відображення назви вибраного файлу
+        if (fileInput) {
+            fileInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    fileNameDisplay.innerText = "✅ " + this.files[0].name;
+                } else {
+                    fileNameDisplay.innerText = "📁 Вибрати картинку з ПК";
+                }
+            });
+        }
+
+        // Збереження нової гри
+        if (saveGameBtn) {
+            saveGameBtn.addEventListener('click', () => {
+                const name = document.getElementById('new-game-name').value;
+                const link = document.getElementById('new-game-link').value;
+                const file = fileInput.files[0];
+
+                if (!name || !link || !file) {
+                    alert('Будь ласка, заповніть всі поля і виберіть картинку!');
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const imgSrc = e.target.result;
+
+                    // Створення карточки гри
+                    const card = document.createElement('div');
+                    card.className = 'game-card hoverable';
+                    // Щоб анімація точно спрацювала на новоствореному елементі:
+                    card.style.animation = 'dropWithBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1) forwards';
+                    card.onclick = () => window.open(link, '_blank');
+
+                    card.innerHTML = `
+                        <div class="image-wrapper"><img src="${imgSrc}" alt="${name}" class="game-image"></div>
+                        <div class="game-title">${name}</div>
+                    `;
+
+                    document.getElementById('main-content').appendChild(card);
+
+                    // Очищення форми та закриття модалки
+                    document.getElementById('new-game-name').value = '';
+                    document.getElementById('new-game-link').value = '';
+                    fileInput.value = '';
+                    fileNameDisplay.innerText = "📁 Вибрати картинку з ПК";
+                    creatorModal.style.display = 'none';
+
+                    // Додаємо курсор-ефект до нової гри
+                    attachHoverEffects();
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
 
         // --- ЛОГІКА ФОНОВИХ ВІЗЕРУНКІВ (КАНВАС) ---
         function setupCanvas(canvasId, isBanScreen = false) {
