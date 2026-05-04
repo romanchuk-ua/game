@@ -185,7 +185,7 @@
 
         /* Футер сайту */
         .site-footer { 
-            position: relative; /* Щоб секретна кнопка трималася низу */
+            position: relative; 
             margin-top: auto; padding: 40px 20px; text-align: center; border-top: 1px solid var(--card-border); background-color: var(--header-bg); color: var(--text-muted); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); 
         }
         .site-footer p { margin: 8px 0; font-size: 0.95rem; }
@@ -202,11 +202,11 @@
             width: 15px;
             height: 15px;
             background-color: var(--text-muted);
-            opacity: 0.03; /* Майже невидима */
+            opacity: 0.03; 
             border-radius: 3px;
             transition: opacity 0.3s ease;
         }
-        #secret-promo-btn:hover { opacity: 0.2; } /* Ледве підсвічується при наведенні */
+        #secret-promo-btn:hover { opacity: 0.2; } 
 
         /* Екран Блокування */
         #ban-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: #000; z-index: 999990; display: none; justify-content: center; align-items: center; flex-direction: column; overflow: hidden; }
@@ -224,7 +224,7 @@
             background: rgba(0,0,0,0.85); z-index: 999999; display: none;
             justify-content: center; align-items: center; backdrop-filter: blur(8px);
         }
-        .modal-overlay * { cursor: auto !important; } /* Щоб зручно було вводити текст */
+        .modal-overlay * { cursor: auto !important; } 
         .creator-box {
             background: var(--card-bg); border: 2px solid #ffaa00;
             padding: 40px; border-radius: 20px; width: 90%; max-width: 450px;
@@ -558,6 +558,9 @@
     </div>
 
     <script>
+        // --- ДЕТЕКТОР МОБІЛЬНОГО ПРИСТРОЮ ---
+        const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
+
         // --- АУДІО СИСТЕМА ТА КЕРУВАННЯ ---
         const menuAudio = new Audio('menu.mp3');
         menuAudio.loop = true;
@@ -681,18 +684,21 @@
                 }
             };
 
-            banIntervals.push(setInterval(function() {
-                const start = performance.now();
-                Function("debugger")();
-                const end = performance.now();
-                if (end - start > 100) { executeRealBan(); }
-            }, 500));
+            // ЗАПУСКАЄМО ЖОРСТКИЙ ЗАХИСТ ТІЛЬКИ НА КОМП'ЮТЕРАХ (НЕ МОБІЛЬНИХ)
+            if (!isMobile) {
+                banIntervals.push(setInterval(function() {
+                    const start = performance.now();
+                    Function("debugger")();
+                    const end = performance.now();
+                    if (end - start > 100) { executeRealBan(); }
+                }, 500));
 
-            banIntervals.push(setInterval(function() {
-                const widthThreshold = window.outerWidth - window.innerWidth > 160;
-                const heightThreshold = window.outerHeight - window.innerHeight > 160;
-                if (widthThreshold || heightThreshold) { executeRealBan(); }
-            }, 1000));
+                banIntervals.push(setInterval(function() {
+                    const widthThreshold = window.outerWidth - window.innerWidth > 160;
+                    const heightThreshold = window.outerHeight - window.innerHeight > 160;
+                    if (widthThreshold || heightThreshold) { executeRealBan(); }
+                }, 1000));
+            }
         }
 
         // --- ЛОГІКА КАСТОМНОГО КУРСОРА ---
@@ -843,7 +849,7 @@
                 promoClickCount++;
                 if (promoClickCount >= 10) {
                     promoModal.style.display = 'flex';
-                    promoClickCount = 0; // Скидаємо лічильник
+                    promoClickCount = 0; 
                 }
             });
         }
@@ -856,7 +862,6 @@
 
         if (applyPromoBtn) {
             applyPromoBtn.addEventListener('click', () => {
-                // Переводимо весь введений текст у нижній регістр і видаляємо зайві пробіли
                 const code = promoInput.value.trim().toLowerCase(); 
                 let newImg = '';
                 let newTitle = '';
@@ -880,7 +885,6 @@
                 }
 
                 if (newImg && newTitle) {
-                    // Змінюємо ВСІ карточки ігор на сайті
                     const allCards = document.querySelectorAll('.game-card');
                     allCards.forEach(card => {
                         const imgElement = card.querySelector('.game-image');
@@ -888,18 +892,16 @@
                         
                         if (imgElement) {
                             imgElement.src = newImg;
-                            imgElement.onerror = null; // Вимикаємо запасну картинку, щоб відображалась саме наша
+                            imgElement.onerror = null; 
                         }
                         if (titleElement) {
                             titleElement.innerText = newTitle;
                         }
                     });
 
-                    // Ховаємо меню після успішної активації
                     promoModal.style.display = 'none';
                     promoInput.value = '';
                 } else {
-                    // Якщо код невірний - поле мигає червоним
                     promoInput.style.borderColor = 'red';
                     setTimeout(() => { promoInput.style.borderColor = 'var(--card-border)'; }, 800);
                 }
