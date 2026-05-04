@@ -173,6 +173,7 @@
         .game-card:nth-child(25) { animation-delay: 2.5s; } .game-card:nth-child(26) { animation-delay: 2.6s; }
         .game-card:nth-child(27) { animation-delay: 2.7s; } .game-card:nth-child(28) { animation-delay: 2.8s; }
         .game-card:nth-child(29) { animation-delay: 2.9s; } .game-card:nth-child(30) { animation-delay: 3.0s; }
+        .game-card:nth-child(31) { animation-delay: 3.1s; } .game-card:nth-child(32) { animation-delay: 3.2s; }
 
         .game-card:hover { transform: translateY(-12px) scale(1.03); box-shadow: var(--shadow-hover); border-color: var(--accent); }
         .game-image { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-bottom: 1px solid var(--card-border); transition: transform 0.5s ease; }
@@ -199,8 +200,8 @@
             bottom: 5px;
             left: 50%;
             transform: translateX(-50%);
-            width: 30px;  /* ЗБІЛЬШЕНО В 2 РАЗИ */
-            height: 30px; /* ЗБІЛЬШЕНО В 2 РАЗИ */
+            width: 30px;  
+            height: 30px; 
             background-color: var(--text-muted);
             opacity: 0.03; 
             border-radius: 6px;
@@ -471,7 +472,6 @@
                 <div class="game-title">FNAF</div>
             </div>
 
-            <!-- НОВІ ІГРИ -->
             <div class="game-card hoverable" onclick="window.open('https://murdergame.github.io/', '_blank')">
                 <div class="image-wrapper"><img src="img/marder.png" alt="Murder" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=Murder'"></div>
                 <div class="game-title">Murder</div>
@@ -511,6 +511,28 @@
                 <div class="image-wrapper"><img src="img/bus.png" alt="City bus driver" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=City+Bus'"></div>
                 <div class="game-title">City bus driver</div>
             </div>
+
+            <!-- ЗОВСІМ НОВІ ІГРИ -->
+            <div class="game-card hoverable" onclick="window.open('https://quickdraw.withgoogle.com/', '_blank')">
+                <div class="image-wrapper"><img src="img/draw.png" alt="Quick draw" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=Quick+draw'"></div>
+                <div class="game-title">Quick draw</div>
+            </div>
+
+            <div class="game-card hoverable" onclick="window.open('https://evowars.io/', '_blank')">
+                <div class="image-wrapper"><img src="img/wars.png" alt="Evowars io" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=Evowars+io'"></div>
+                <div class="game-title">Evowars io</div>
+            </div>
+
+            <div class="game-card hoverable" onclick="window.open('https://moomoo.io/', '_blank')">
+                <div class="image-wrapper"><img src="img/moomoo.png" alt="Moomoo io" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=Moomoo+io'"></div>
+                <div class="game-title">Moomoo io</div>
+            </div>
+
+            <div class="game-card hoverable" onclick="window.open('https://gamaverse.ru/fnf-frajdej-najt-fankin/', '_blank')">
+                <div class="image-wrapper"><img src="img/fnf.png" alt="Friday Night Fankin" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=FNF'"></div>
+                <div class="game-title">Friday Night Fankin</div>
+            </div>
+
         </main>
 
         <!-- Футер сайту -->
@@ -547,9 +569,9 @@
             <div class="creator-box" style="border-color: #ff0055; box-shadow: 0 10px 40px rgba(255, 0, 85, 0.2);">
                 <span class="close-creator" id="close-promo-btn">&times;</span>
                 <h2 style="color: #ff0055; letter-spacing: 2px;">SECRET PANEL</h2>
-                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">Введіть секретний код для активації спеціального режиму</p>
+                <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 20px;">Введіть своє ім'я, щоб активувати спеціальний режим</p>
                 
-                <input type="text" id="promo-input" class="creator-input" placeholder="СЮДИ КОД..." style="text-align: center; font-weight: bold; text-transform: uppercase;">
+                <input type="text" id="promo-input" class="creator-input" placeholder="СЮДИ ІМ'Я..." style="text-align: center; font-weight: bold; text-transform: uppercase;">
                 
                 <button class="creator-btn-save" id="apply-promo-btn" style="background: #ff0055; color: #fff; box-shadow: 0 0 15px rgba(255, 0, 85, 0.4);">АКТИВУВАТИ</button>
             </div>
@@ -568,7 +590,7 @@
 
         const banAudio = new Audio('music.mp3');
         banAudio.loop = true;
-        banAudio.volume = 1.0; // Максимум = 1.0 (якщо хочеш 5х гучніше, підсили сам mp3 файл)
+        banAudio.volume = 1.0; 
 
         let isMuted = false;
         const soundBtn = document.getElementById('sound-btn');
@@ -847,7 +869,7 @@
         if (secretPromoBtn) {
             secretPromoBtn.addEventListener('click', () => {
                 promoClickCount++;
-                if (promoClickCount >= 10) {
+                if (promoClickCount >= 5) { // ЗМІНЕНО НА 5 КЛІКІВ
                     promoModal.style.display = 'flex';
                     promoClickCount = 0; 
                 }
