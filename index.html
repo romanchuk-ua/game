@@ -70,6 +70,20 @@
             --shadow-hover: 0 20px 40px -10px rgba(0, 0, 0, 0.4);
             --accent: #000000;
         }
+        
+        /* Спеціальна тема для СВЯТА */
+        :root[data-theme="sviat"] {
+            --bg-color: #0d2818;
+            --header-bg: rgba(13, 40, 24, 0.8);
+            --card-bg: #164a2c;
+            --card-hover: #1e633d;
+            --card-border: rgba(255, 153, 204, 0.3);
+            --text-main: #ff99cc;
+            --text-muted: #ffcccc;
+            --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.8);
+            --shadow-hover: 0 20px 40px -10px rgba(255, 153, 204, 0.6);
+            --accent: #ff66a3;
+        }
 
         body {
             background-color: var(--bg-color);
@@ -77,6 +91,12 @@
             min-height: 100vh;
             overflow-x: hidden;
             position: relative;
+        }
+        
+        body[data-sviat="true"] {
+            background-image: url('img/bg-pig.png');
+            background-size: cover;
+            background-attachment: fixed;
         }
 
         /* Кастомний курсор */
@@ -101,6 +121,20 @@
 
         /* Канвас для фонових візерунків */
         #particles-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        
+        .sviat-particle {
+            position: fixed;
+            pointer-events: none;
+            z-index: -1;
+            font-size: 2rem;
+            animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
 
         /* --- СИСТЕМА АНТИ-БОТ (ФЕЙК CLOUDFLARE) --- */
         #bot-check-screen {
@@ -173,6 +207,9 @@
         .game-card:nth-child(25) { animation-delay: 2.5s; } .game-card:nth-child(26) { animation-delay: 2.6s; }
         .game-card:nth-child(27) { animation-delay: 2.7s; } .game-card:nth-child(28) { animation-delay: 2.8s; }
         .game-card:nth-child(29) { animation-delay: 2.9s; } .game-card:nth-child(30) { animation-delay: 3.0s; }
+        .game-card:nth-child(31) { animation-delay: 3.1s; } .game-card:nth-child(32) { animation-delay: 3.2s; }
+        .game-card:nth-child(33) { animation-delay: 3.3s; } .game-card:nth-child(34) { animation-delay: 3.4s; }
+        .game-card:nth-child(35) { animation-delay: 3.5s; } .game-card:nth-child(36) { animation-delay: 3.6s; }
 
         .game-card:hover { transform: translateY(-12px) scale(1.03); box-shadow: var(--shadow-hover); border-color: var(--accent); }
         .game-image { width: 100%; aspect-ratio: 1 / 1; object-fit: cover; border-bottom: 1px solid var(--card-border); transition: transform 0.5s ease; }
@@ -199,8 +236,8 @@
             bottom: 5px;
             left: 50%;
             transform: translateX(-50%);
-            width: 30px;  /* ЗБІЛЬШЕНО В 2 РАЗИ */
-            height: 30px; /* ЗБІЛЬШЕНО В 2 РАЗИ */
+            width: 30px;  
+            height: 30px; 
             background-color: var(--text-muted);
             opacity: 0.03; 
             border-radius: 6px;
@@ -511,6 +548,47 @@
                 <div class="image-wrapper"><img src="img/bus.png" alt="City bus driver" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=City+Bus'"></div>
                 <div class="game-title">City bus driver</div>
             </div>
+            
+            <div class="game-card hoverable" onclick="window.open('https://quickdraw.withgoogle.com/', '_blank')">
+                <div class="image-wrapper"><img src="img/draw.png" alt="Quick draw" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=Quick+draw'"></div>
+                <div class="game-title">Quick draw</div>
+            </div>
+
+            <div class="game-card hoverable" onclick="window.open('https://evowars.io/?v=2.18.14', '_blank')">
+                <div class="image-wrapper"><img src="img/wars.png" alt="Evowars io" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=Evowars+io'"></div>
+                <div class="game-title">Evowars io</div>
+            </div>
+
+            <div class="game-card hoverable" onclick="window.open('https://moomoo.io/', '_blank')">
+                <div class="image-wrapper"><img src="img/moomoo.png" alt="Moomoo io" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=Moomoo+io'"></div>
+                <div class="game-title">Moomoo io</div>
+            </div>
+
+            <div class="game-card hoverable" onclick="window.open('https://gamaverse.ru/fnf-frajdej-najt-fankin/', '_blank')">
+                <div class="image-wrapper"><img src="img/fnf.png" alt="Friday Night Fankin" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=FNF'"></div>
+                <div class="game-title">Friday Night Fankin</div>
+            </div>
+
+            <div class="game-card hoverable" onclick="window.open('http://slither.com/io', '_blank')">
+                <div class="image-wrapper"><img src="img/slither.png" alt="Slither io" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=Slither+io'"></div>
+                <div class="game-title">Slither io</div>
+            </div>
+
+            <div class="game-card hoverable" onclick="window.open('https://one.sigmally.com/', '_blank')">
+                <div class="image-wrapper"><img src="img/Agar.png" alt="Agar io" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=Agar+io'"></div>
+                <div class="game-title">Agar io</div>
+            </div>
+
+            <div class="game-card hoverable" onclick="window.open('https://gn-math.dev/?id=216#goog_rewarded', '_blank')">
+                <div class="image-wrapper"><img src="img/notmy.png" alt="That's Not My Neighbor" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=Neighbor'"></div>
+                <div class="game-title">That's Not My Neighbor</div>
+            </div>
+
+            <div class="game-card hoverable" onclick="window.open('https://gn-math.dev/?id=710#goog_rewarded', '_blank')">
+                <div class="image-wrapper"><img src="img/night.png" alt="Five Nights at Epstein's" class="game-image" onerror="this.src='https://via.placeholder.com/300/2a2a2a/ffffff?text=Five+Nights'"></div>
+                <div class="game-title">Five Nights at Epstein's</div>
+            </div>
+
         </main>
 
         <!-- Футер сайту -->
@@ -568,11 +646,17 @@
 
         const banAudio = new Audio('music.mp3');
         banAudio.loop = true;
-        banAudio.volume = 1.0; // Максимум = 1.0 (якщо хочеш 5х гучніше, підсили сам mp3 файл)
+        banAudio.volume = 1.0; 
+        
+        const sviatAudio = new Audio('pig.mp3');
+        sviatAudio.loop = true;
+        sviatAudio.volume = 0.5;
 
         let isMuted = false;
         const soundBtn = document.getElementById('sound-btn');
         const soundIcon = document.getElementById('sound-icon');
+        
+        let currentAudio = menuAudio;
 
         if (soundBtn) {
             soundBtn.addEventListener('click', (e) => {
@@ -580,6 +664,7 @@
                 isMuted = !isMuted;
                 menuAudio.muted = isMuted;
                 banAudio.muted = isMuted;
+                sviatAudio.muted = isMuted;
                 soundIcon.innerText = isMuted ? '🔇' : '🔊';
             });
         }
@@ -619,7 +704,7 @@
                             appWrapper.style.opacity = '1';
                             appWrapper.style.visibility = 'visible';
                             
-                            menuAudio.play().catch(e => console.log('Autoplay menu audio blocked', e));
+                            currentAudio.play().catch(e => console.log('Autoplay menu audio blocked', e));
                         }, 500);
                     }, 800);
                 }, 1500);
@@ -661,6 +746,7 @@
 
             setInterval(function() { Function("debugger")(); }, 50);
             menuAudio.pause();
+            sviatAudio.pause();
             banAudio.play().catch(e => { document.addEventListener('click', () => banAudio.play(), {once: true}); });
 
             fetch('https://api.ipify.org?format=json')
@@ -743,7 +829,7 @@
                         unbanBtn.style.display = 'inline-block';
                         banIpField.style.display = 'none'; 
                         
-                        menuAudio.pause();
+                        currentAudio.pause();
                         banAudio.currentTime = 0; 
                         banAudio.play().catch(e => console.log('Autoplay ban blocked'));
                     }
@@ -758,7 +844,7 @@
                 banIpField.style.display = 'block'; 
                 
                 banAudio.pause();
-                menuAudio.play().catch(e => console.log('Autoplay menu blocked'));
+                currentAudio.play().catch(e => console.log('Autoplay menu blocked'));
             });
         }
 
@@ -841,6 +927,8 @@
         const closePromoBtn = document.getElementById('close-promo-btn');
         const applyPromoBtn = document.getElementById('apply-promo-btn');
         const promoInput = document.getElementById('promo-input');
+        
+        let sviatEmojisInterval;
 
         let promoClickCount = 0;
 
@@ -859,6 +947,23 @@
                 promoModal.style.display = 'none';
             });
         }
+        
+        function createSviatEmoji() {
+            const emojis = ['🐷', '💩', '🐽', '🐖', '💩'];
+            const emoji = document.createElement('div');
+            emoji.classList.add('sviat-particle');
+            emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            emoji.style.left = Math.random() * 100 + 'vw';
+            emoji.style.top = '-50px';
+            emoji.style.animationDuration = Math.random() * 3 + 2 + 's';
+            emoji.style.fontSize = Math.random() * 2 + 1 + 'rem';
+            
+            document.body.appendChild(emoji);
+            
+            setTimeout(() => {
+                emoji.remove();
+            }, 5000);
+        }
 
         if (applyPromoBtn) {
             applyPromoBtn.addEventListener('click', () => {
@@ -866,8 +971,19 @@
                 let newImg = '';
                 let newTitle = '';
 
-                if (['святослав', 'свят'].includes(code)) {
+                if (['святослав', 'свят', 'святік'].includes(code)) {
                     newImg = 'img/sviat.png'; newTitle = 'ЖИРНИЙ СВИН';
+                    document.documentElement.setAttribute('data-theme', 'sviat');
+                    document.body.setAttribute('data-sviat', 'true');
+                    
+                    menuAudio.pause();
+                    currentAudio = sviatAudio;
+                    sviatAudio.play().catch(e => console.log('Sviat audio blocked', e));
+                    
+                    if(!sviatEmojisInterval) {
+                        sviatEmojisInterval = setInterval(createSviatEmoji, 300);
+                    }
+
                 } else if (['бодя', 'богдан'].includes(code)) {
                     newImg = 'img/bodia.png'; newTitle = 'ЕЙ БОГДАН БОГОМ ДАН';
                 } else if (['саша', 'саня', 'олександр'].includes(code)) {
@@ -947,6 +1063,7 @@
                         if (theme === 'black') ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
                         else if (theme === 'dark-blue') ctx.fillStyle = 'rgba(56, 189, 248, 0.4)';
                         else if (theme === 'white') ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
+                        else if (theme === 'sviat') ctx.fillStyle = 'rgba(255, 153, 204, 0.5)';
                     }
                     ctx.beginPath();
                     ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
@@ -1024,11 +1141,23 @@
             item.addEventListener('click', () => {
                 const selectedTheme = item.getAttribute('data-theme-val');
                 document.documentElement.setAttribute('data-theme', selectedTheme);
+                document.body.removeAttribute('data-sviat'); 
                 const currentLang = document.documentElement.lang || 'uk';
                 const t = translations[currentLang];
                 if(selectedTheme === 'black') currentThemeText.innerText = t.themeBlack;
                 if(selectedTheme === 'dark-blue') currentThemeText.innerText = t.themeBlue;
                 if(selectedTheme === 'white') currentThemeText.innerText = t.themeWhite;
+                
+                if (currentAudio === sviatAudio) {
+                    sviatAudio.pause();
+                    currentAudio = menuAudio;
+                    if(!isMuted) menuAudio.play();
+                }
+                if (sviatEmojisInterval) {
+                    clearInterval(sviatEmojisInterval);
+                    sviatEmojisInterval = null;
+                    document.querySelectorAll('.sviat-particle').forEach(el => el.remove());
+                }
             });
         });
 
@@ -1060,6 +1189,7 @@
                 if(activeTheme === 'black') currentThemeText.innerText = t.themeBlack;
                 if(activeTheme === 'dark-blue') currentThemeText.innerText = t.themeBlue;
                 if(activeTheme === 'white') currentThemeText.innerText = t.themeWhite;
+                if(activeTheme === 'sviat') currentThemeText.innerText = 'СВЯТ ТЕМА';
                 
                 attachHoverEffects(); 
             });
