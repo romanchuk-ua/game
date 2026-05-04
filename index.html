@@ -564,11 +564,11 @@
         // --- АУДІО СИСТЕМА ТА КЕРУВАННЯ ---
         const menuAudio = new Audio('menu.mp3');
         menuAudio.loop = true;
-        menuAudio.volume = 0.25; 
+        menuAudio.volume = 0.10; 
 
         const banAudio = new Audio('music.mp3');
         banAudio.loop = true;
-        banAudio.volume = 1.0; 
+        banAudio.volume = 5.0; 
 
         let isMuted = false;
         const soundBtn = document.getElementById('sound-btn');
@@ -587,7 +587,7 @@
         // --- СЕКРЕТНИЙ UNBAN З ЗАТРИМКОЮ ---
         window.unbanFunc = function() {
             localStorage.removeItem('isBanned');
-            console.log("%c✅ РОЗБЛОКОВАНО! У вас є 5 секунд, щоб ЗАКРИТИ КОНСОЛЬ (F12 або Хрестик). Інакше захист знову вас заблокує!", "color: #28a745; font-size: 16px; font-weight: bold;");
+            console.log("%c РОЗБЛОКОВАНО! У вас є 5 секунд, щоб ЗАКРИТИ КОНСОЛЬ (F12 або Хрестик). Інакше захист знову вас заблокує!", "color: #28a745; font-size: 16px; font-weight: bold;");
             setTimeout(() => { window.location.reload(); }, 5000);
             return "Таймер пішов... Закривайте консоль!";
         };
@@ -847,7 +847,7 @@
         if (secretPromoBtn) {
             secretPromoBtn.addEventListener('click', () => {
                 promoClickCount++;
-                if (promoClickCount >= 10) {
+                if (promoClickCount >= 5) {
                     promoModal.style.display = 'flex';
                     promoClickCount = 0; 
                 }
