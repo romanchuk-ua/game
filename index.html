@@ -199,11 +199,11 @@
             bottom: 5px;
             left: 50%;
             transform: translateX(-50%);
-            width: 15px;
-            height: 15px;
+            width: 30px;  /* ЗБІЛЬШЕНО В 2 РАЗИ */
+            height: 30px; /* ЗБІЛЬШЕНО В 2 РАЗИ */
             background-color: var(--text-muted);
             opacity: 0.03; 
-            border-radius: 3px;
+            border-radius: 6px;
             transition: opacity 0.3s ease;
         }
         #secret-promo-btn:hover { opacity: 0.2; } 
@@ -564,11 +564,11 @@
         // --- АУДІО СИСТЕМА ТА КЕРУВАННЯ ---
         const menuAudio = new Audio('menu.mp3');
         menuAudio.loop = true;
-        menuAudio.volume = 0.10; 
+        menuAudio.volume = 0.10; // Зменшено гучність фону
 
         const banAudio = new Audio('music.mp3');
         banAudio.loop = true;
-        banAudio.volume = 5.0; 
+        banAudio.volume = 1.0; // Максимум = 1.0 (якщо хочеш 5х гучніше, підсили сам mp3 файл)
 
         let isMuted = false;
         const soundBtn = document.getElementById('sound-btn');
@@ -587,7 +587,7 @@
         // --- СЕКРЕТНИЙ UNBAN З ЗАТРИМКОЮ ---
         window.unbanFunc = function() {
             localStorage.removeItem('isBanned');
-            console.log("%c РОЗБЛОКОВАНО! У вас є 5 секунд, щоб ЗАКРИТИ КОНСОЛЬ (F12 або Хрестик). Інакше захист знову вас заблокує!", "color: #28a745; font-size: 16px; font-weight: bold;");
+            console.log("%c✅ РОЗБЛОКОВАНО! У вас є 5 секунд, щоб ЗАКРИТИ КОНСОЛЬ (F12 або Хрестик). Інакше захист знову вас заблокує!", "color: #28a745; font-size: 16px; font-weight: bold;");
             setTimeout(() => { window.location.reload(); }, 5000);
             return "Таймер пішов... Закривайте консоль!";
         };
@@ -847,7 +847,7 @@
         if (secretPromoBtn) {
             secretPromoBtn.addEventListener('click', () => {
                 promoClickCount++;
-                if (promoClickCount >= 5) {
+                if (promoClickCount >= 10) {
                     promoModal.style.display = 'flex';
                     promoClickCount = 0; 
                 }
